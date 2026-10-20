@@ -227,7 +227,7 @@ export function Sparkles({ count = 9, className }: { count?: number; className?:
       {dots.map((p, i) => (
         <span
           key={i}
-          className="animate-twinkle absolute rounded-full bg-gold shadow-[0_0_8px_2px_var(--gold)]"
+          className="animate-twinkle absolute rounded-full bg-gold glow-gold"
           style={{ left: `${p.left}%`, top: `${p.top}%`, width: p.s, height: p.s, animationDelay: `${p.d}s`, animationDuration: `${3 + (i % 4)}s` }}
         />
       ))}
