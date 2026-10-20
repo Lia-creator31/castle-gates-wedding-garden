@@ -11,7 +11,7 @@ import bride from "@/assets/Brides.jpeg.asset.json";
 import couple from "@/assets/Grooms_Bride.jpeg.asset.json";
 import { WEDDING, buildWhatsappUrl, getCountdown } from "./data";
 import { PalaceGate } from "./PalaceGate";
-import { GardenIntro, FloralCorner, Butterfly } from "./Garden";
+import { GardenIntro, FloralCorner, Butterfly, Garland, WisteriaHang, Sparkles, Filigree } from "./Garden";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -73,7 +73,12 @@ function SaveTheDate() {
     ["Hari", cd.days], ["Jam", cd.hours], ["Menit", cd.minutes], ["Detik", cd.seconds],
   ] as const;
   return (
-    <section className="bg-band pb-16 text-cream">
+    <section className="relative isolate overflow-hidden bg-band pb-16 text-cream">
+      <Sparkles count={9} className="top-[45%] -z-10" />
+      <WisteriaHang side="left" className="z-10 w-28" />
+      <WisteriaHang side="right" className="z-10 w-28" delay={0.2} />
+      <Filigree corner="bl" />
+      <Filigree corner="br" />
       <motion.div
         className="overflow-hidden"
         initial={{ clipPath: "inset(0 0 100% 0)" }}
@@ -115,7 +120,11 @@ function SaveTheDate() {
 /* 4. QURAN */
 function Quote() {
   return (
-    <section className="paper bg-soft px-8 py-20 text-center">
+    <section className="paper relative isolate overflow-hidden bg-soft px-8 pb-28 pt-20 text-center">
+      <Filigree corner="tl" />
+      <Filigree corner="tr" />
+      <Butterfly className="right-[10%] top-[38%]" size={22} dur={14} delay={0.5} path={{ x: [0, -30, -60, -20, 0], y: [0, 20, -10, 30, 0] }} />
+      <Garland flip className="-bottom-4 -z-10" delay={0.2} />
       <Reveal>
         <img src={miniCastle.url} alt="" className="animate-float mx-auto -my-10 w-56" />
       </Reveal>
@@ -163,6 +172,8 @@ function Person({ p, img, role, from }: { p: typeof WEDDING.bride; img: string; 
 function Couple() {
   return (
     <section className="paper relative overflow-hidden bg-cream px-8 py-20">
+      <Filigree corner="tl" />
+      <Filigree corner="br" />
       <FloralCorner className="-right-14 -top-2 rotate-180" />
       <FloralCorner className="-left-16 top-[46%] w-40 opacity-80" delay={0.2} />
       <Butterfly className="left-[12%] top-24" size={26} dur={15} path={{ x: [0, 40, 90, 50, 0], y: [0, -20, 20, 40, 0] }} />
@@ -182,7 +193,12 @@ function Couple() {
 /* 6. LOVE STORY */
 function LoveStory() {
   return (
-    <section className="bg-band px-8 py-20 text-cream">
+    <section className="relative isolate overflow-hidden bg-band px-8 py-20 text-cream">
+      <Sparkles count={10} className="-z-10" />
+      <WisteriaHang side="left" className="-z-10" />
+      <WisteriaHang side="right" className="-z-10" delay={0.2} />
+      <Filigree corner="bl" />
+      <Filigree corner="br" />
       <ScriptTitle light>Our Love Story</ScriptTitle>
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
@@ -226,6 +242,7 @@ function Events() {
     <section className="paper relative overflow-hidden bg-soft px-6 py-20">
       <FloralCorner className="-left-12 top-6 rotate-180" flip />
       <FloralCorner className="-bottom-2 -right-12" flip delay={0.2} />
+      <Butterfly className="right-[12%] top-10 z-10" size={22} dur={15} delay={0.8} path={{ x: [0, -35, -70, -25, 0], y: [0, 15, -10, 25, 0] }} />
       <Reveal y={60}>
         <div className="arch border border-lilac/60 bg-card px-6 pb-12 pt-24 shadow-soft backdrop-blur">
           <EventBlock e={WEDDING.akad} />
@@ -242,7 +259,9 @@ function Events() {
 /* 8. LIVE */
 function Live() {
   return (
-    <section className="bg-cream px-8 pb-16 text-center">
+    <section className="relative isolate overflow-hidden bg-cream px-8 pb-24 pt-4 text-center">
+      <Butterfly className="left-[8%] top-6" size={20} dur={13} path={{ x: [0, 30, 70, 30, 0], y: [0, -10, 15, 25, 0] }} />
+      <Garland flip className="-bottom-4 -z-10 w-[96%] opacity-90" delay={0.2} />
       <ScriptTitle>Live Streaming</ScriptTitle>
       <Reveal delay={0.1} className="mt-4 text-sm text-muted-foreground">
         Bagi keluarga & sahabat yang berhalangan hadir, saksikan momen bahagia kami secara virtual.
@@ -261,7 +280,12 @@ function Gallery() {
   const imgs = [couple.url, bride.url, groom.url, couple.url, groom.url, bride.url];
   const [open, setOpen] = useState<string | null>(null);
   return (
-    <section className="bg-band px-4 py-20">
+    <section className="relative isolate overflow-hidden bg-band px-4 py-20">
+      <Sparkles count={10} className="-z-10" />
+      <WisteriaHang side="left" className="-z-10" />
+      <WisteriaHang side="right" className="-z-10" delay={0.2} />
+      <Filigree corner="bl" />
+      <Filigree corner="br" />
       <ScriptTitle light>Our Gallery</ScriptTitle>
       <Reveal delay={0.1} className="mx-auto mt-3 max-w-xs text-center font-serif italic text-cream/80">
         “Every love story is beautiful, but ours is my favorite.”
@@ -299,8 +323,11 @@ function WeddingGift() {
     catch { toast.error("Gagal menyalin, silakan salin manual."); }
   };
   return (
-    <section className="paper relative overflow-hidden bg-cream px-6 py-20">
+    <section className="paper relative isolate overflow-hidden bg-cream px-6 pb-28 pt-20">
       <Butterfly className="right-[14%] top-14" size={24} dur={14} delay={1} path={{ x: [0, -40, -70, -20, 0], y: [0, 20, -10, 30, 0] }} />
+      <Filigree corner="tl" />
+      <Filigree corner="tr" />
+      <Garland flip className="-bottom-4 -z-10" delay={0.2} />
       <ScriptTitle>Wedding Gift</ScriptTitle>
       <Reveal delay={0.1} className="mx-auto mt-4 max-w-xs text-center text-sm text-muted-foreground">
         Doa restu Anda merupakan karunia yang sangat berarti bagi kami. Namun jika memberi adalah ungkapan tanda kasih, Anda dapat memberi kado secara cashless.
@@ -350,8 +377,10 @@ function Rsvp({ guest }: { guest: string | null }) {
     window.open(buildWhatsappUrl(WEDDING.whatsapp, form), "_blank");
   };
   return (
-    <section className="relative overflow-hidden bg-soft px-6 py-20">
+    <section className="relative isolate overflow-hidden bg-soft px-6 py-20">
       <FloralCorner className="-right-14 -top-2 w-44 rotate-180" />
+      <FloralCorner className="-bottom-3 -left-14 -z-10 w-40" flip delay={0.2} />
+      <Butterfly className="left-[10%] top-20" size={22} dur={15} delay={0.6} path={{ x: [0, 40, 80, 30, 0], y: [0, -15, 20, 35, 0] }} />
       <ScriptTitle>Reservasi</ScriptTitle>
       <Reveal delay={0.1} className="mt-3 text-center text-sm text-muted-foreground">Mohon konfirmasi kehadiran Anda</Reveal>
       <Reveal delay={0.2}>
@@ -399,7 +428,12 @@ function Wishes() {
     toast.success("Terima kasih atas ucapannya!");
   };
   return (
-    <section className="bg-band px-6 py-20">
+    <section className="relative isolate overflow-hidden bg-band px-6 py-20">
+      <Sparkles count={10} className="-z-10" />
+      <WisteriaHang side="left" className="-z-10" />
+      <WisteriaHang side="right" className="-z-10" delay={0.2} />
+      <Filigree corner="bl" />
+      <Filigree corner="br" />
       <ScriptTitle light>Wedding Wish</ScriptTitle>
       <Reveal delay={0.1}>
         <form onSubmit={submit} className="mt-8 space-y-3 rounded-3xl bg-cream p-5">
@@ -424,7 +458,10 @@ function Wishes() {
 /* 13. FOOTER */
 function Footer() {
   return (
-    <footer className="relative overflow-hidden bg-cream px-6 pb-16 pt-10 text-center">
+    <footer className="relative isolate overflow-hidden bg-cream px-6 pb-24 pt-10 text-center">
+      <Sparkles count={7} className="-z-10" />
+      <Butterfly className="left-[10%] top-[48%]" size={22} dur={16} path={{ x: [0, 50, 90, 40, 0], y: [0, -25, 10, 30, 0] }} />
+      <Garland flip className="-bottom-3 w-[104%] opacity-90" delay={0.3} />
       <Reveal y={50}><img src={bottomBg.url} alt="" className="mx-auto w-full" /></Reveal>
       <Reveal delay={0.2}>
         <p className="mx-auto mt-4 max-w-xs text-sm text-muted-foreground">
