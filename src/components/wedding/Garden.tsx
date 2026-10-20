@@ -7,6 +7,7 @@ import fountain from "@/assets/fountain.webp";
 import wisteria from "@/assets/wisteria.webp";
 import butterflyImg from "@/assets/butterfly.webp";
 import urn from "@/assets/urn.webp";
+import garland from "@/assets/garland.webp";
 import { WEDDING } from "./data";
 
 const ease = [0.22, 1, 0.36, 1] as const;
@@ -171,5 +172,81 @@ export function GardenIntro() {
         transition={{ duration: 3, delay: 0.3, ease: [0.5, 0, 0.75, 0.4] }}
       />
     </section>
+  );
+}
+
+/* ---------- Light section decorations (used from the 2nd page to the end) ---------- */
+
+/* A watercolor floral garland that drapes softly over a section edge. */
+export function Garland({ className, flip, delay = 0 }: { className?: string; flip?: boolean; delay?: number }) {
+  return (
+    <motion.div
+      className={`pointer-events-none absolute left-1/2 w-[112%] -translate-x-1/2 ${className ?? ""}`}
+      initial={{ opacity: 0, y: flip ? 16 : -16 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.3 }}
+      transition={{ duration: 1.4, delay, ease }}
+    >
+      <img
+        src={garland}
+        alt=""
+        loading="lazy"
+        width={900}
+        height={191}
+        className={`animate-sway-soft w-full ${flip ? "-scale-y-100" : ""}`}
+        style={{ animationDuration: "9s" }}
+      />
+    </motion.div>
+  );
+}
+
+/* Wisteria hanging from a top corner, swaying in the breeze. */
+export function WisteriaHang({ className, side = "left", delay = 0 }: { className?: string; side?: "left" | "right"; delay?: number }) {
+  return (
+    <motion.div
+      className={`pointer-events-none absolute top-0 w-24 ${side === "left" ? "-left-5" : "-right-5"} ${className ?? ""}`}
+      style={{ scaleX: side === "right" ? -1 : 1 }}
+      initial={{ opacity: 0, y: -30 }}
+      whileInView={{ opacity: 0.95, y: 0 }}
+      viewport={{ once: true, amount: 0.1 }}
+      transition={{ duration: 1.6, delay, ease }}
+    >
+      <img src={wisteria} alt="" loading="lazy" width={520} height={780} className="animate-sway w-full" style={{ animationDelay: side === "right" ? "-3.5s" : "0s" }} />
+    </motion.div>
+  );
+}
+
+/* Tiny gold twinkles scattered over a section. */
+export function Sparkles({ count = 9, className }: { count?: number; className?: string }) {
+  const dots = useMemo(
+    () => Array.from({ length: count }, (_, i) => ({ left: (i * 41 + 7) % 96, top: (i * 29 + 11) % 92, d: (i * 0.7) % 3, s: 3 + (i % 3) * 2 })),
+    [count],
+  );
+  return (
+    <div className={`pointer-events-none absolute inset-0 ${className ?? ""}`}>
+      {dots.map((p, i) => (
+        <span
+          key={i}
+          className="animate-twinkle absolute rounded-full bg-gold shadow-[0_0_8px_2px_var(--gold)]"
+          style={{ left: `${p.left}%`, top: `${p.top}%`, width: p.s, height: p.s, animationDelay: `${p.d}s`, animationDuration: `${3 + (i % 4)}s` }}
+        />
+      ))}
+    </div>
+  );
+}
+
+/* Fine gold filigree flourish for section corners (inline SVG, inherits text color). */
+export function Filigree({ className, corner = "tl" }: { className?: string; corner?: "tl" | "tr" | "bl" | "br" }) {
+  const rot = { tl: "", tr: "-scale-x-100", bl: "-scale-y-100", br: "-scale-100" }[corner];
+  const pos = { tl: "left-3 top-3", tr: "right-3 top-3", bl: "bottom-3 left-3", br: "bottom-3 right-3" }[corner];
+  return (
+    <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="1.1" strokeLinecap="round" className={`pointer-events-none absolute h-16 w-16 text-gold opacity-80 ${pos} ${rot} ${className ?? ""}`} aria-hidden>
+      <path d="M4 96 V30 Q4 4 30 4 H96" />
+      <path d="M12 96 V36 Q12 12 36 12 H96" opacity=".55" />
+      <path d="M22 22 q14 4 18 18 q-14 -2 -18 -18 Z" />
+      <path d="M30 4 q-2 12 8 18 M4 30 q12 -2 18 8" />
+      <circle cx="22" cy="22" r="2.2" fill="currentColor" />
+      <path d="M52 12 q8 -8 16 0 q-8 8 -16 0 Z M12 52 q-8 8 0 16 q8 -8 0 -16 Z" opacity=".8" />
+    </svg>
   );
 }
