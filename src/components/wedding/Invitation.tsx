@@ -11,7 +11,7 @@ import bride from "@/assets/Brides.jpeg.asset.json";
 import couple from "@/assets/Grooms_Bride.jpeg.asset.json";
 import { WEDDING, buildWhatsappUrl, getCountdown } from "./data";
 import { PalaceGate } from "./PalaceGate";
-import { GardenIntro, FloralCorner, Butterfly, Garland, WisteriaHang, Sparkles, Filigree } from "./Garden";
+import { GardenIntro, FloralCorner, Butterfly, Garland, WisteriaHang, SectionSparkles, Filigree } from "./Garden";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -74,7 +74,7 @@ function SaveTheDate() {
   ] as const;
   return (
     <section className="relative isolate overflow-hidden bg-band pb-16 text-cream">
-      <Sparkles count={9} className="top-[45%] -z-10" />
+      <SectionSparkles count={9} className="top-[45%] -z-10" />
       <WisteriaHang side="left" className="z-10 w-28" />
       <WisteriaHang side="right" className="z-10 w-28" delay={0.2} />
       <Filigree corner="bl" />
@@ -194,7 +194,7 @@ function Couple() {
 function LoveStory() {
   return (
     <section className="relative isolate overflow-hidden bg-band px-8 py-20 text-cream">
-      <Sparkles count={10} className="-z-10" />
+      <SectionSparkles count={10} className="-z-10" />
       <WisteriaHang side="left" className="-z-10" />
       <WisteriaHang side="right" className="-z-10" delay={0.2} />
       <Filigree corner="bl" />
@@ -281,7 +281,7 @@ function Gallery() {
   const [open, setOpen] = useState<string | null>(null);
   return (
     <section className="relative isolate overflow-hidden bg-band px-4 py-20">
-      <Sparkles count={10} className="-z-10" />
+      <SectionSparkles count={10} className="-z-10" />
       <WisteriaHang side="left" className="-z-10" />
       <WisteriaHang side="right" className="-z-10" delay={0.2} />
       <Filigree corner="bl" />
@@ -429,7 +429,7 @@ function Wishes() {
   };
   return (
     <section className="relative isolate overflow-hidden bg-band px-6 py-20">
-      <Sparkles count={10} className="-z-10" />
+      <SectionSparkles count={10} className="-z-10" />
       <WisteriaHang side="left" className="-z-10" />
       <WisteriaHang side="right" className="-z-10" delay={0.2} />
       <Filigree corner="bl" />
@@ -459,7 +459,7 @@ function Wishes() {
 function Footer() {
   return (
     <footer className="relative isolate overflow-hidden bg-cream px-6 pb-24 pt-10 text-center">
-      <Sparkles count={7} className="-z-10" />
+      <SectionSparkles count={7} className="-z-10" />
       <Butterfly className="left-[10%] top-[48%]" size={22} dur={16} path={{ x: [0, 50, 90, 40, 0], y: [0, -25, 10, 30, 0] }} />
       <Garland flip className="-bottom-3 w-[104%] opacity-90" delay={0.3} />
       <Reveal y={50}><img src={bottomBg.url} alt="" className="mx-auto w-full" /></Reveal>

@@ -217,7 +217,7 @@ export function WisteriaHang({ className, side = "left", delay = 0 }: { classNam
 }
 
 /* Tiny gold twinkles scattered over a section. */
-export function Sparkles({ count = 9, className }: { count?: number; className?: string }) {
+export function SectionSparkles({ count = 9, className }: { count?: number; className?: string }) {
   const dots = useMemo(
     () => Array.from({ length: count }, (_, i) => ({ left: (i * 41 + 7) % 96, top: (i * 29 + 11) % 92, d: (i * 0.7) % 3, s: 3 + (i % 3) * 2 })),
     [count],
