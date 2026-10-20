@@ -169,6 +169,7 @@
 @utility animate-bird { animation: bird-fly linear infinite both; }
 @utility animate-bird-wing { animation: bird-wing .5s ease-in-out infinite; transform-origin: center; }
 @utility animate-twinkle { animation: twinkle 3s ease-in-out infinite both; }
+@utility glow-gold { box-shadow: 0 0 8px 2px color-mix(in oklab, var(--gold) 70%, transparent); }
 @utility animate-dust { animation: dust-rise linear infinite both; }
 @utility animate-mist { animation: mist 4s ease-in-out infinite; }
 
