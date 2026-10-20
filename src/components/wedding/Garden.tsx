@@ -182,6 +182,7 @@ export function Garland({ className, flip, delay = 0 }: { className?: string; fl
   return (
     <motion.div
       className={`pointer-events-none absolute left-1/2 w-[112%] -translate-x-1/2 ${className ?? ""}`}
+      style={{ scaleY: flip ? -1 : 1 }}
       initial={{ opacity: 0, y: flip ? 16 : -16 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.3 }}
@@ -193,7 +194,7 @@ export function Garland({ className, flip, delay = 0 }: { className?: string; fl
         loading="lazy"
         width={900}
         height={191}
-        className={`animate-sway-soft w-full ${flip ? "-scale-y-100" : ""}`}
+        className="animate-sway-soft w-full"
         style={{ animationDuration: "9s" }}
       />
     </motion.div>
