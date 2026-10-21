@@ -477,6 +477,7 @@ function Footer() {
 
 export function Invitation() {
   const [opened, setOpened] = useState(false);
+  const [entering, setEntering] = useState(false);
   const [playing, setPlaying] = useState(false);
   const [guest, setGuest] = useState<string | null>(null);
   const audio = useRef<HTMLAudioElement>(null);
@@ -490,6 +491,7 @@ export function Invitation() {
 
   const open = () => {
     window.scrollTo({ top: 0 });
+    setEntering(true); // mount the garden behind the gate so the doors open onto it
     audio.current?.play().then(() => setPlaying(true)).catch(() => setPlaying(false));
   };
   const arrive = () => {
@@ -507,7 +509,7 @@ export function Invitation() {
     <div className="min-h-screen bg-lilac-soft">
       <div className="relative mx-auto max-w-md overflow-hidden bg-cream shadow-soft">
         <AnimatePresence>{!opened && <PalaceGate guest={guest} onOpen={open} onDone={arrive} />}</AnimatePresence>
-        {opened && (
+        {(entering || opened) && (
           <main>
             <Petals />
             <GardenIntro />

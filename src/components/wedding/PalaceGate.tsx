@@ -4,7 +4,6 @@ import { Mail } from "lucide-react";
 import gateFrame from "@/assets/gate_frame.webp";
 import doorLeft from "@/assets/gate_door_left.webp";
 import doorRight from "@/assets/gate_door_right.webp";
-import garden from "@/assets/palace_garden.webp";
 import { WEDDING } from "./data";
 
 const ease = [0.22, 1, 0.36, 1] as const;
@@ -12,11 +11,15 @@ const inOut = [0.65, 0, 0.35, 1] as const;
 
 /* Doorway position inside the gate artwork (percent of the 1088x1920 image). */
 const DOOR = { left: 29.6, seam: 50.09, right: 70.04, top: 30.47, bottom: 77.97 };
-const ORIGIN = "50% 54.2%";
+/* Camera focus point (the doorway centre) — shared with the garden behind the gate. */
+export const GATE_ORIGIN = "50% 54.2%";
+const ORIGIN = GATE_ORIGIN;
 const maskOf = (src: string) => ({ maskImage: `url(${src})`, WebkitMaskImage: `url(${src})`, maskSize: "100% 100%", WebkitMaskSize: "100% 100%" });
 
-/* Cinematic timeline (seconds after "Buka Undangan" is tapped). */
-const T = {
+/* Cinematic timeline (seconds after "Buka Undangan" is tapped).
+   The real garden page (GardenIntro) is mounted behind the gate at t=0 and
+   follows this same timeline, so the doors open onto the actual garden. */
+export const GATE_T = {
   textOut: 0.9,
   approach: 2.2, // camera glides toward the gate
   seamStart: 1.2, // light leaks through the seam
@@ -24,9 +27,12 @@ const T = {
   doorsDur: 3.2,
   pushStart: 4.3, // camera passes through the doorway
   pushDur: 3.4,
-  bloomStart: 6.9,
+  archStart: 5.4, // camera passes through the floral arch in the garden
+  archDur: 3.0,
+  titleIn: 7.2, // names appear once we have arrived
   done: 7.8,
 };
+const T = GATE_T;
 
 export function PalaceGate({ guest, onOpen, onDone }: { guest: string | null; onOpen: () => void; onDone: () => void }) {
   const reduce = useReducedMotion();
@@ -49,36 +55,18 @@ export function PalaceGate({ guest, onOpen, onDone }: { guest: string | null; on
   );
 
   const gateTotal = T.pushStart + T.pushDur;
-  const gardenTotal = T.done + 1.6;
   const at = (s: number, total: number) => s / total;
 
   return (
     <motion.section
-      className="fixed inset-0 z-50 mx-auto max-w-md overflow-hidden bg-cream"
+      /* Once entering, the section turns see-through: the garden page itself is
+         what shows through the doorway (no separate "behind the gate" picture). */
+      className={`fixed inset-0 z-50 mx-auto max-w-md overflow-hidden ${enter ? "" : "bg-cream"}`}
       exit={{ opacity: 0 }}
       transition={{ duration: 1.6 * k, ease }}
       aria-label="Gerbang istana"
     >
       <div className="stage-cover">
-        {/* Garden beyond the gate — far layer, moves slower (parallax depth) */}
-        <motion.div
-          className="gpu absolute inset-0"
-          style={{ transformOrigin: ORIGIN }}
-          initial={{ scale: 0.62 }}
-          animate={
-            enter
-              ? { scale: [0.62, 0.66, 0.69, 1.12, 1.3] }
-              : { scale: 0.62 }
-          }
-          transition={{
-            duration: gardenTotal * k,
-            times: [0, at(T.approach, gardenTotal), at(T.pushStart, gardenTotal), at(T.pushStart + T.pushDur, gardenTotal), 1],
-            ease: [ease, "linear", [0.25, 0.6, 0.35, 1], "linear"],
-          }}
-        >
-          <img src={garden} alt="" className="h-full w-full object-cover" width={1088} height={1920} />
-        </motion.div>
-
         {/* Gate — near layer: approach, doors open, camera passes through */}
         <motion.div
           className="gpu absolute inset-0"
@@ -105,7 +93,7 @@ export function PalaceGate({ guest, onOpen, onDone }: { guest: string | null; on
             className="bg-doorlight absolute"
             style={{ left: `${DOOR.left}%`, top: `${DOOR.top}%`, width: `${DOOR.right - DOOR.left}%`, height: `${DOOR.bottom - DOOR.top}%` }}
             initial={{ opacity: 0 }}
-            animate={enter ? { opacity: [0, 0.95, 0.5, 0] } : { opacity: 0 }}
+            animate={enter ? { opacity: [0, 0.6, 0.3, 0] } : { opacity: 0 }}
             transition={{ delay: T.doorsStart * k, duration: (T.doorsDur + 1.6) * k, times: [0, 0.3, 0.65, 1] }}
           />
 
@@ -166,18 +154,12 @@ export function PalaceGate({ guest, onOpen, onDone }: { guest: string | null; on
         ))}
       </div>
 
-      {/* Full-screen bloom of light as we arrive in the garden */}
+      {/* Soft bloom of light as the doors part and we step into the garden */}
       <motion.div
         className="bg-doorlight pointer-events-none absolute inset-0"
         initial={{ opacity: 0 }}
-        animate={enter ? { opacity: [0, 0.35, 0] } : { opacity: 0 }}
-        transition={{ delay: (T.doorsStart + 0.6) * k, duration: 2.6 * k }}
-      />
-      <motion.div
-        className="pointer-events-none absolute inset-0 bg-cream"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: enter ? 1 : 0 }}
-        transition={{ delay: T.bloomStart * k, duration: 0.9 * k, ease }}
+        animate={enter ? { opacity: [0, 0.3, 0.18, 0] } : { opacity: 0 }}
+        transition={{ delay: (T.doorsStart + 0.6) * k, duration: (T.pushStart + T.pushDur - T.doorsStart) * k, times: [0, 0.3, 0.7, 1] }}
       />
 
       {/* Invitation card */}
