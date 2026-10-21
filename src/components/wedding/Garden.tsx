@@ -122,8 +122,8 @@ export function GardenIntro() {
         <motion.div className="absolute -right-[7%] -top-[4%] w-[30%] -scale-x-100" initial={{ opacity: 0, y: -30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.8, delay: 0.75, ease }}>
           <img src={wisteria} alt="" width={520} height={780} className="animate-sway w-full" style={{ animationDuration: "10s", animationDelay: "-4s" }} />
         </motion.div>
-        <motion.img src={flowerBush} alt="" width={900} height={540} className="absolute -bottom-[1%] -left-[9%] w-[36%]" initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 1.8, delay: 1, ease }} />
-        <motion.img src={flowerBush} alt="" width={900} height={540} className="absolute -bottom-[1%] -right-[9%] w-[36%] -scale-x-100" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 1.8, delay: 1.1, ease }} />
+        <motion.img src={flowerBush} alt="" width={900} height={540} className="absolute -bottom-[2%] -left-[10%] w-[42%]" initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 1.8, delay: 1, ease }} />
+        <motion.img src={flowerBush} alt="" width={900} height={540} className="absolute -bottom-[2%] -right-[10%] w-[42%] -scale-x-100" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 1.8, delay: 1.1, ease }} />
       </Layer>
 
       <div className="pointer-events-none absolute inset-0">
@@ -137,7 +137,7 @@ export function GardenIntro() {
         <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.4, delay: 1.6, ease }}>
           <p className="font-serif text-xs uppercase tracking-[0.4em] text-navy">We are getting married</p>
           <h2 className="mt-3 font-script text-6xl text-burgundy drop-shadow-[0_2px_8px_var(--cream)]">{WEDDING.bride.nick} & {WEDDING.groom.nick}</h2>
-          <div className="divider-gold mx-auto mt-4 w-32" />
+          <div className="divider-gold mx-auto mt-2 w-32" />
           <p className="mt-3 font-serif text-sm tracking-[0.35em] text-navy">{WEDDING.dateShort}</p>
         </motion.div>
       </motion.div>
