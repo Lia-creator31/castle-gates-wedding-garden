@@ -3,10 +3,8 @@ import { motion, useMotionValue, useScroll, useSpring, useTransform, type Motion
 import castle from "@/assets/Castle.png.asset.json";
 import floralArch from "@/assets/Gate.png.asset.json";
 import flowerBush from "@/assets/flower_bush.webp";
-import fountain from "@/assets/fountain.webp";
 import wisteria from "@/assets/wisteria.webp";
 import butterflyImg from "@/assets/butterfly.webp";
-import urn from "@/assets/urn.webp";
 import garland from "@/assets/garland.webp";
 import { WEDDING } from "./data";
 
