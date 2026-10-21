@@ -154,18 +154,12 @@ export function PalaceGate({ guest, onOpen, onDone }: { guest: string | null; on
         ))}
       </div>
 
-      {/* Full-screen bloom of light as we arrive in the garden */}
+      {/* Soft bloom of light as the doors part and we step into the garden */}
       <motion.div
         className="bg-doorlight pointer-events-none absolute inset-0"
         initial={{ opacity: 0 }}
-        animate={enter ? { opacity: [0, 0.35, 0] } : { opacity: 0 }}
-        transition={{ delay: (T.doorsStart + 0.6) * k, duration: 2.6 * k }}
-      />
-      <motion.div
-        className="pointer-events-none absolute inset-0 bg-cream"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: enter ? 1 : 0 }}
-        transition={{ delay: T.bloomStart * k, duration: 0.9 * k, ease }}
+        animate={enter ? { opacity: [0, 0.3, 0.18, 0] } : { opacity: 0 }}
+        transition={{ delay: (T.doorsStart + 0.6) * k, duration: (T.pushStart + T.pushDur - T.doorsStart) * k, times: [0, 0.3, 0.7, 1] }}
       />
 
       {/* Invitation card */}
