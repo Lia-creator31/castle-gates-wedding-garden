@@ -93,7 +93,7 @@ export function PalaceGate({ guest, onOpen, onDone }: { guest: string | null; on
             className="bg-doorlight absolute"
             style={{ left: `${DOOR.left}%`, top: `${DOOR.top}%`, width: `${DOOR.right - DOOR.left}%`, height: `${DOOR.bottom - DOOR.top}%` }}
             initial={{ opacity: 0 }}
-            animate={enter ? { opacity: [0, 0.95, 0.5, 0] } : { opacity: 0 }}
+            animate={enter ? { opacity: [0, 0.6, 0.3, 0] } : { opacity: 0 }}
             transition={{ delay: T.doorsStart * k, duration: (T.doorsDur + 1.6) * k, times: [0, 0.3, 0.65, 1] }}
           />
 

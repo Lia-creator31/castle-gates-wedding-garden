@@ -12,4 +12,5 @@
 ## Project rules
 - Invitation UI lives in `src/components/wedding/`; all names, dates, venues, banks and wishes come from `data.ts` so copy changes never touch layout code.
 - The entry gate (`PalaceGate.tsx`) is driven by the single `T` timeline object and `DOOR` percentages measured on the gate artwork; door leaves are cut from the same image, so regenerate frame + doors together if the artwork changes.
+- The gate has no picture of its own behind the doors: `GardenIntro` is mounted under the gate when entry starts and follows the exported `GATE_T`/`GATE_ORIGIN`, so the doorway reveals the real garden page and the hand-off has no cut.
 - Large decorative images ship as optimized local `.webp` imports; original user media stays as `.asset.json` CDN pointers.

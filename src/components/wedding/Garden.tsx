@@ -106,7 +106,7 @@ export function GardenIntro() {
         {/* FAR: warm glow + castle */}
         <Layer x={xFar} y={yFar}>
           <span className="animate-glow absolute left-1/2 top-[6%] h-48 w-48 -translate-x-1/2 rounded-full bg-lantern" />
-          <motion.div className="absolute inset-0" initial={{ opacity: 0.5, scale: 1.12 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: (T.pushStart + T.pushDur) * k, ease }}>
+          <motion.div className="absolute inset-0" initial={{ opacity: 0.85, scale: 1.12 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: (T.pushStart + T.pushDur) * k, ease }}>
             <img src={castle.url} alt="Castle" className="animate-kenburns h-full w-full object-cover" />
           </motion.div>
         </Layer>
