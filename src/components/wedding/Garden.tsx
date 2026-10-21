@@ -27,13 +27,11 @@ export function Butterfly({ className, size = 34, path, dur = 14, delay = 0 }: {
   );
 }
 
-/* A small flock of birds gliding across the sky. */
+/* A pair of birds gliding slowly across the sky. */
 function Birds() {
   const birds = [
-    { top: "9%", dur: 26, delay: 1.5, s: 1 },
-    { top: "12%", dur: 26, delay: 2.1, s: 0.75 },
-    { top: "7%", dur: 26, delay: 2.6, s: 0.6 },
-    { top: "16%", dur: 34, delay: 12, s: 0.8 },
+    { top: "10%", dur: 34, delay: 2, s: 0.9 },
+    { top: "12.5%", dur: 34, delay: 2.7, s: 0.65 },
   ];
   return (
     <>
@@ -84,21 +82,20 @@ function Layer({ x, y, className, children }: { x: MotionValue<number>; y: Motio
   );
 }
 
-/* Core page: the palace garden with layered depth, parallax and gentle motion. */
+/* Core page: the palace garden — luxury-minimal. The castle carries the scene,
+   decor stays on the edges, and the couple's names are the clear focus. */
 export function GardenIntro() {
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
-  const yFar = useTransform(scrollYProgress, [0, 1], ["0%", "22%"]);
-  const yMid = useTransform(scrollYProgress, [0, 1], ["0%", "12%"]);
-  const yNear = useTransform(scrollYProgress, [0, 1], ["0%", "-8%"]);
+  const yFar = useTransform(scrollYProgress, [0, 1], ["0%", "18%"]);
+  const yNear = useTransform(scrollYProgress, [0, 1], ["0%", "-6%"]);
   const yText = useTransform(scrollYProgress, [0, 1], ["0%", "40%"]);
   const fade = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
 
   const px = useMotionValue(0);
   const sx = useSpring(px, { stiffness: 40, damping: 16 });
   const xFar = useTransform(sx, (v) => v * -6);
-  const xMid = useTransform(sx, (v) => v * -14);
-  const xNear = useTransform(sx, (v) => v * -26);
+  const xNear = useTransform(sx, (v) => v * -18);
 
   const onMove = (e: PointerEvent<HTMLElement>) => {
     if (e.pointerType !== "mouse") return;
@@ -108,56 +105,42 @@ export function GardenIntro() {
 
   return (
     <section ref={ref} onPointerMove={onMove} onPointerLeave={() => px.set(0)} className="bg-sky relative flex h-svh flex-col items-center justify-end overflow-hidden">
-      {/* FAR: sky, birds, castle */}
+      {/* FAR: soft sun, a pair of birds, the castle */}
       <Layer x={xFar} y={yFar}>
-        <span className="animate-glow absolute left-1/2 top-[6%] h-48 w-48 -translate-x-1/2 rounded-full bg-lantern" />
+        <span className="animate-glow absolute left-1/2 top-[6%] h-40 w-40 -translate-x-1/2 rounded-full bg-lantern opacity-70" />
         <Birds />
         <motion.div className="absolute inset-0" initial={{ opacity: 0.2, scale: 1.18 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 3, ease }}>
           <img src={castle.url} alt="Castle" className="animate-kenburns h-full w-full object-cover" />
         </motion.div>
       </Layer>
 
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-cream via-cream/80 to-transparent" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[55%] bg-gradient-to-t from-cream via-cream/85 to-transparent" />
 
-      {/* MID: urns & fountain */}
-      <Layer x={xMid} y={yMid}>
-        <motion.img src={urn} alt="" className="absolute bottom-[17%] left-[1%] w-[22%]" initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.6, delay: 1.2, ease }} />
-        <motion.img src={urn} alt="" className="absolute bottom-[17%] right-[1%] w-[22%] -scale-x-100" initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.6, delay: 1.35, ease }} />
-        <motion.div className="absolute bottom-[19%] left-1/2 w-[30%] -translate-x-1/2" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.8, delay: 1, ease }}>
-          <img src={fountain} alt="Air mancur" className="w-full" />
-          <span className="animate-mist absolute inset-x-[10%] top-[8%] h-1/2 rounded-full bg-cream/40 blur-xl" />
-        </motion.div>
-      </Layer>
-
-      {/* NEAR: wisteria & flower beds */}
+      {/* NEAR: wisteria framing the top corners, a small flower bed in each bottom corner */}
       <Layer x={xNear} y={yNear}>
-        <motion.div className="absolute -left-[10%] -top-[3%] w-[44%]" initial={{ opacity: 0, y: -40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.8, delay: 0.6, ease }}>
-          <img src={wisteria} alt="" className="animate-sway w-full" />
+        <motion.div className="absolute -left-[7%] -top-[4%] w-[30%]" initial={{ opacity: 0, y: -30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.8, delay: 0.6, ease }}>
+          <img src={wisteria} alt="" width={520} height={780} className="animate-sway w-full" style={{ animationDuration: "10s" }} />
         </motion.div>
-        <motion.div className="absolute -right-[10%] -top-[3%] w-[44%] -scale-x-100" initial={{ opacity: 0, y: -40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.8, delay: 0.8, ease }}>
-          <img src={wisteria} alt="" className="animate-sway w-full [animation-delay:-3s]" />
+        <motion.div className="absolute -right-[7%] -top-[4%] w-[30%] -scale-x-100" initial={{ opacity: 0, y: -30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.8, delay: 0.75, ease }}>
+          <img src={wisteria} alt="" width={520} height={780} className="animate-sway w-full" style={{ animationDuration: "10s", animationDelay: "-4s" }} />
         </motion.div>
-        <motion.div className="absolute -bottom-[2%] -left-[16%] w-[62%]" initial={{ opacity: 0, x: -40 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 1.8, delay: 0.9, ease }}>
-          <img src={flowerBush} alt="" className="animate-sway-soft w-full" />
-        </motion.div>
-        <motion.div className="absolute -bottom-[2%] -right-[16%] w-[62%] -scale-x-100" initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 1.8, delay: 1.05, ease }}>
-          <img src={flowerBush} alt="" className="animate-sway-soft w-full [animation-delay:-2.5s]" />
-        </motion.div>
+        <motion.img src={flowerBush} alt="" width={900} height={540} className="absolute -bottom-[1%] -left-[9%] w-[36%]" initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 1.8, delay: 1, ease }} />
+        <motion.img src={flowerBush} alt="" width={900} height={540} className="absolute -bottom-[1%] -right-[9%] w-[36%] -scale-x-100" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 1.8, delay: 1.1, ease }} />
       </Layer>
 
       <div className="pointer-events-none absolute inset-0">
-        <Sparkles />
-        <Butterfly className="left-[18%] top-[38%]" size={34} dur={16} delay={2} path={{ x: [0, 60, 120, 70, 10, 0], y: [0, -40, 10, 60, 30, 0] }} />
-        <Butterfly className="right-[16%] top-[50%]" size={26} dur={13} delay={3} path={{ x: [0, -50, -90, -40, 10, 0], y: [0, -30, 20, -50, -10, 0] }} />
-        <Butterfly className="left-[44%] top-[22%]" size={22} dur={18} delay={4.5} path={{ x: [0, 40, -30, -60, 20, 0], y: [0, 30, 60, 10, -20, 0] }} />
+        <Sparkles count={4} />
+        <Butterfly className="left-[20%] top-[46%]" size={26} dur={18} delay={3} path={{ x: [0, 50, 100, 60, 10, 0], y: [0, -30, 10, 40, 20, 0] }} />
       </div>
 
-      {/* Title */}
-      <motion.div className="relative z-10 pb-12 text-center" style={{ y: yText, opacity: fade }}>
-        <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.4, delay: 1.6, ease }}>
+      {/* Title — the focal point */}
+      <motion.div className="relative z-10 px-6 pb-16 text-center" style={{ y: yText, opacity: fade }}>
+        <span className="cover-veil pointer-events-none absolute inset-x-[-20%] inset-y-[-30%] -z-10" />
+        <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.4, delay: 1.6, ease }}>
           <p className="font-serif text-xs uppercase tracking-[0.4em] text-navy">We are getting married</p>
-          <h2 className="mt-2 font-script text-6xl text-burgundy drop-shadow-[0_2px_8px_var(--cream)]">{WEDDING.bride.nick} & {WEDDING.groom.nick}</h2>
-          <div className="divider-gold mx-auto mt-3 w-32" />
+          <h2 className="mt-3 font-script text-6xl text-burgundy drop-shadow-[0_2px_8px_var(--cream)]">{WEDDING.bride.nick} & {WEDDING.groom.nick}</h2>
+          <div className="divider-gold mx-auto mt-4 w-32" />
+          <p className="mt-3 font-serif text-sm tracking-[0.35em] text-navy">{WEDDING.dateShort}</p>
         </motion.div>
       </motion.div>
 
