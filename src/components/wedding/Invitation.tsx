@@ -11,6 +11,8 @@ import bride from "@/assets/Brides.jpeg.asset.json";
 import couple from "@/assets/Grooms_Bride.jpeg.asset.json";
 import { WEDDING, buildWhatsappUrl, getCountdown } from "./data";
 import { PalaceGate } from "./PalaceGate";
+import { GuestTicket } from "./GuestTicket";
+import { decodeGuestToken, encodeGuestToken, normalizeCategory, type DecodedGuestTicket } from "@/lib/guests";
 import { GardenIntro, FloralCorner, Butterfly, Garland, WisteriaHang, SectionSparkles, Filigree } from "./Garden";
 
 const ease = [0.22, 1, 0.36, 1] as const;
@@ -190,38 +192,7 @@ function Couple() {
   );
 }
 
-/* 6. LOVE STORY */
-function LoveStory() {
-  return (
-    <section className="relative isolate overflow-hidden bg-band px-8 py-20 text-cream">
-      <SectionSparkles count={10} className="-z-10" />
-      <WisteriaHang side="left" className="-z-10" />
-      <WisteriaHang side="right" className="-z-10" delay={0.2} />
-      <Filigree corner="bl" />
-      <Filigree corner="br" />
-      <ScriptTitle light>Our Love Story</ScriptTitle>
-      <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
-        whileInView={{ opacity: 1, scale: 1 }}
-        viewport={{ once: true, amount: 0.3 }}
-        transition={{ duration: 1.3, ease }}
-        className="arch mx-auto mt-10 w-64 overflow-hidden border-4 border-lilac/50"
-      >
-        <img src={couple.url} alt="" className="aspect-[3/4] w-full object-cover grayscale" />
-      </motion.div>
-      <div className="mt-10 space-y-6">
-        {WEDDING.story.map((s, i) => (
-          <Reveal key={s.title} delay={i * 0.1} className="border-l border-lilac/50 pl-5">
-            <p className="font-serif text-xl text-lilac">{s.title}</p>
-            <p className="mt-1 text-sm leading-relaxed text-cream/85">{s.text}</p>
-          </Reveal>
-        ))}
-      </div>
-    </section>
-  );
-}
-
-/* 7. EVENTS */
+/* 6. EVENTS */
 function EventBlock({ e }: { e: typeof WEDDING.akad }) {
   return (
     <div className="text-center">
@@ -256,26 +227,7 @@ function Events() {
   );
 }
 
-/* 8. LIVE */
-function Live() {
-  return (
-    <section className="relative isolate overflow-hidden bg-cream px-8 pb-24 pt-4 text-center">
-      <Butterfly className="left-[8%] top-6" size={20} dur={13} path={{ x: [0, 30, 70, 30, 0], y: [0, -10, 15, 25, 0] }} />
-      <Garland flip className="-bottom-4 -z-10 w-[96%] opacity-90" delay={0.2} />
-      <ScriptTitle>Live Streaming</ScriptTitle>
-      <Reveal delay={0.1} className="mt-4 text-sm text-muted-foreground">
-        Bagi keluarga & sahabat yang berhalangan hadir, saksikan momen bahagia kami secara virtual.
-      </Reveal>
-      <Reveal delay={0.2} className="mt-6">
-        <a href={WEDDING.live} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-full border border-burgundy px-5 py-2.5 text-sm text-burgundy transition hover:bg-burgundy hover:text-primary-foreground">
-          <Instagram className="h-4 w-4" /> Instagram
-        </a>
-      </Reveal>
-    </section>
-  );
-}
-
-/* 9. GALLERY */
+/* 7. GALLERY */
 function Gallery() {
   const imgs = [couple.url, bride.url, groom.url, couple.url, groom.url, bride.url];
   const [open, setOpen] = useState<string | null>(null);
@@ -316,7 +268,7 @@ function Gallery() {
   );
 }
 
-/* 10. GIFT */
+/* 8. GIFT */
 function WeddingGift() {
   const copy = async (n: string) => {
     try { await navigator.clipboard.writeText(n); toast.success("Nomor rekening disalin!"); }
@@ -368,9 +320,12 @@ function WeddingGift() {
 
 const inputCls = "w-full rounded-xl border border-input bg-card px-4 py-3 text-sm text-navy outline-none placeholder:text-muted-foreground focus:border-lilac focus:ring-2 focus:ring-lilac/30";
 
-/* 11. RSVP */
+/* 9. RSVP */
 function Rsvp({ guest }: { guest: string | null }) {
   const [form, setForm] = useState({ name: guest ?? "", address: "", attend: "Hadir", guests: "1" });
+  useEffect(() => {
+    if (guest) setForm((prev) => ({ ...prev, name: prev.name || guest }));
+  }, [guest]);
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.name.trim()) { toast.error("Mohon isi nama Anda"); return; }
@@ -407,7 +362,7 @@ function Rsvp({ guest }: { guest: string | null }) {
   );
 }
 
-/* 12. WISHES */
+/* 10. WISHES */
 type Wish = { name: string; msg: string; time: string };
 function Wishes() {
   const [wishes, setWishes] = useState<Wish[]>(WEDDING.wishes);
@@ -455,7 +410,7 @@ function Wishes() {
   );
 }
 
-/* 13. FOOTER */
+/* 11. FOOTER */
 function Footer() {
   return (
     <footer className="relative isolate overflow-hidden bg-cream px-6 pb-24 pt-10 text-center">
@@ -480,11 +435,43 @@ export function Invitation() {
   const [entering, setEntering] = useState(false);
   const [playing, setPlaying] = useState(false);
   const [guest, setGuest] = useState<string | null>(null);
+  const [ticket, setTicket] = useState<DecodedGuestTicket | null>(null);
   const audio = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
-    setGuest(new URLSearchParams(window.location.search).get("to"));
+    const params = new URLSearchParams(window.location.search);
+    const gParam = params.get("g");
+    const toParam = params.get("to");
+    const catParam = params.get("cat") || params.get("kategori");
+
+    const decoded = decodeGuestToken(gParam);
+    if (decoded) {
+      setTicket(decoded);
+      setGuest(decoded.name);
+    } else if (toParam && toParam.trim()) {
+      const name = toParam.trim();
+      const category = normalizeCategory(catParam);
+      const id = "NB-GUEST";
+      setGuest(name);
+      setTicket({
+        id,
+        name,
+        category,
+        token: encodeGuestToken({ id, name, category }),
+      });
+    }
   }, []);
+
+  const displayTicket = useMemo<DecodedGuestTicket>(
+    () =>
+      ticket ?? {
+        id: "NB-DEMO",
+        name: "Tamu Kehormatan",
+        category: "VIP",
+        token: encodeGuestToken({ id: "NB-DEMO", name: "Tamu Kehormatan", category: "VIP" }),
+      },
+    [ticket],
+  );
   useEffect(() => {
     document.body.style.overflow = opened ? "" : "hidden";
   }, [opened]);
@@ -508,7 +495,7 @@ export function Invitation() {
   return (
     <div className="min-h-screen bg-lilac-soft">
       <div className="relative mx-auto max-w-md overflow-hidden bg-cream shadow-soft">
-        <AnimatePresence>{!opened && <PalaceGate guest={guest} onOpen={open} onDone={arrive} />}</AnimatePresence>
+        <AnimatePresence>{!opened && <PalaceGate guest={guest} category={ticket?.category ?? null} onOpen={open} onDone={arrive} />}</AnimatePresence>
         {(entering || opened) && (
           <main>
             <Petals />
@@ -516,9 +503,8 @@ export function Invitation() {
             <SaveTheDate />
             <Quote />
             <Couple />
-            <LoveStory />
             <Events />
-            <Live />
+            <GuestTicket ticket={displayTicket} />
             <Gallery />
             <WeddingGift />
             <Rsvp guest={guest} />

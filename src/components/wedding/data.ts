@@ -31,16 +31,10 @@ export const WEDDING = {
     address: "Jl. Mawar Kencana No. 21, Kebayoran Baru, Jakarta Selatan 12110",
     maps: "https://maps.google.com/?q=Jakarta",
   },
-  live: "https://instagram.com/",
   calendarUrl:
     "https://calendar.google.com/calendar/render?action=TEMPLATE&text=The+Wedding+of+Nella+%26+Broni&dates=20250615T030000Z/20250615T090000Z&details=Akad+%26+Resepsi&location=Jakarta",
   whatsapp: "6281234567890",
   music: "https://ia800905.us.archive.org/19/items/FREE_background_music_dhalius/backsound.mp3",
-  story: [
-    { title: "Pertemuan Pertama", text: "Kami pertama kali bertemu di sebuah acara kampus pada tahun 2019. Sebuah sapaan sederhana yang tanpa kami sadari menjadi awal dari segalanya." },
-    { title: "Menjalin Kasih", text: "Waktu demi waktu, kebersamaan tumbuh menjadi rasa saling percaya. Kami belajar memahami, menguatkan, dan bermimpi bersama." },
-    { title: "Lamaran", text: "Di awal tahun 2025, dengan restu kedua keluarga, kami memutuskan untuk melangkah ke jenjang pernikahan." },
-  ],
   banks: [
     { bank: "BCA", number: "1234567890", name: "Margareta Nariaswari" },
     { bank: "mandiri", number: "0987654321", name: "Bobby J Simanjuntak" },

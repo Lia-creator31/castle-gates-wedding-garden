@@ -5,6 +5,7 @@ import gateFrame from "@/assets/gate_frame.webp";
 import doorLeft from "@/assets/gate_door_left.webp";
 import doorRight from "@/assets/gate_door_right.webp";
 import { WEDDING } from "./data";
+import type { GuestCategory } from "@/lib/guests";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 const inOut = [0.65, 0, 0.35, 1] as const;
@@ -34,7 +35,17 @@ export const GATE_T = {
 };
 const T = GATE_T;
 
-export function PalaceGate({ guest, onOpen, onDone }: { guest: string | null; onOpen: () => void; onDone: () => void }) {
+export function PalaceGate({
+  guest,
+  category,
+  onOpen,
+  onDone,
+}: {
+  guest: string | null;
+  category?: GuestCategory | null;
+  onOpen: () => void;
+  onDone: () => void;
+}) {
   const reduce = useReducedMotion();
   const k = reduce ? 0.3 : 1;
   const [enter, setEnter] = useState(false);
@@ -179,9 +190,20 @@ export function PalaceGate({ guest, onOpen, onDone }: { guest: string | null; on
           </h1>
           <p className="mt-3 font-serif text-lg tracking-[0.3em] text-navy">{WEDDING.dateShort}</p>
           {guest && (
-            <div className="mt-6">
+            <div className="mt-6 flex flex-col items-center">
               <p className="text-xs text-muted-foreground">Kepada Yth. Bapak/Ibu/Saudara/i</p>
               <p className="mt-1 font-serif text-xl font-semibold text-navy">{guest}</p>
+              {category && (
+                <span
+                  className={`mt-2 inline-flex items-center gap-1 rounded-full px-3.5 py-0.5 font-serif text-[11px] font-semibold uppercase tracking-[0.2em] ${
+                    category === "VIP"
+                      ? "border border-gold bg-burgundy text-cream shadow-sm"
+                      : "border border-lilac bg-lilac-soft text-navy"
+                  }`}
+                >
+                  {category === "VIP" ? "✦ VIP ✦" : "Reguler"}
+                </span>
+              )}
             </div>
           )}
           <button
