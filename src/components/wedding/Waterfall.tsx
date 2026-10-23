@@ -258,5 +258,5 @@ export function Waterfall() {
     );
   }
 
-  return <canvas ref={canvasRef} aria-hidden className="pointer-events-none absolute h-full w-full opacity-0 transition-opacity duration-700" style={box} />;
+  return <canvas ref={canvasRef} aria-hidden className="pointer-events-none absolute opacity-0 transition-opacity duration-700" style={box} />;
 }
