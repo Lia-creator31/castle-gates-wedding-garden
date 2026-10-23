@@ -4,32 +4,33 @@ import { Mail } from "lucide-react";
 import gateFrame from "@/assets/gate_frame.webp";
 import doorLeft from "@/assets/gate_door_left.webp";
 import doorRight from "@/assets/gate_door_right.webp";
+import butterflyImg from "@/assets/butterfly.webp";
 import { WEDDING } from "./data";
 import type { GuestCategory } from "@/lib/guests";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 const inOut = [0.65, 0, 0.35, 1] as const;
 
-/* Doorway position inside the gate artwork (percent of the 1088x1920 image). */
-const DOOR = { left: 29.6, seam: 50.09, right: 70.04, top: 30.47, bottom: 77.97 };
+/* The single main gate: the original watercolor floral stone arch set into the
+   palace garden wall, with gilded wrought-iron doors inside the arch.
+   Doorway position inside the gate artwork (percent of the 1080x1920 image). */
+const DOOR = { left: 31.85, seam: 50.93, right: 70.0, top: 31.98, bottom: 78.18 };
 /* Camera focus point (the doorway centre) — shared with the garden behind the gate. */
-export const GATE_ORIGIN = "50% 54.2%";
+export const GATE_ORIGIN = "50.9% 55%";
 const ORIGIN = GATE_ORIGIN;
 const maskOf = (src: string) => ({ maskImage: `url(${src})`, WebkitMaskImage: `url(${src})`, maskSize: "100% 100%", WebkitMaskSize: "100% 100%" });
 
 /* Cinematic timeline (seconds after "Buka Undangan" is tapped).
-   The real garden page (GardenIntro) is mounted behind the gate at t=0 and
+   The real garden page (GardenIntro) sits behind the gate the whole time and
    follows this same timeline, so the doors open onto the actual garden. */
 export const GATE_T = {
   textOut: 0.9,
   approach: 2.2, // camera glides toward the gate
-  seamStart: 1.2, // light leaks through the seam
+  seamStart: 1.2, // light glints along the seam of the doors
   doorsStart: 2.0,
   doorsDur: 3.2,
   pushStart: 4.3, // camera passes through the doorway
   pushDur: 3.4,
-  archStart: 5.4, // camera passes through the floral arch in the garden
-  archDur: 3.0,
   titleIn: 7.2, // names appear once we have arrived
   done: 7.8,
 };
@@ -61,28 +62,36 @@ export function PalaceGate({
   };
 
   const dust = useMemo(
-    () => Array.from({ length: 14 }, (_, i) => ({ left: 8 + ((i * 53) % 84), bottom: 4 + ((i * 29) % 30), dur: 7 + (i % 5) * 1.6, delay: i * 0.7, size: 2 + (i % 3) })),
+    () => Array.from({ length: 12 }, (_, i) => ({ left: 8 + ((i * 53) % 84), bottom: 4 + ((i * 29) % 30), dur: 7 + (i % 5) * 1.6, delay: i * 0.7, size: 2 + (i % 3) })),
     [],
   );
+  const petals = useMemo(
+    () => Array.from({ length: 6 }, (_, i) => ({ left: 6 + ((i * 47) % 88), dur: 13 + (i % 3) * 4, delay: i * 2.3, size: 8 + (i % 3) * 3, c: i % 3 })),
+    [],
+  );
+  const petalColors = ["bg-burgundy/45", "bg-lilac/60", "bg-navy/30"];
 
   const gateTotal = T.pushStart + T.pushDur;
   const at = (s: number, total: number) => s / total;
 
   return (
     <motion.section
-      /* Once entering, the section turns see-through: the garden page itself is
-         what shows through the doorway (no separate "behind the gate" picture). */
-      className={`fixed inset-0 z-50 mx-auto max-w-md overflow-hidden ${enter ? "" : "bg-cream"}`}
+      /* The section itself is see-through: the garden page behind it is what
+         shows through the lattice of the doors and, later, the open doorway. */
+      className="fixed inset-0 z-50 mx-auto max-w-md overflow-hidden"
       exit={{ opacity: 0 }}
       transition={{ duration: 1.6 * k, ease }}
       aria-label="Gerbang istana"
     >
+      {/* Soft cream mist that clears to reveal the garden through the gate */}
+      <motion.div className="absolute inset-0 bg-cream" initial={{ opacity: 1 }} animate={{ opacity: 0 }} transition={{ duration: 2.2, delay: 0.9, ease }} />
+
       <div className="stage-cover">
-        {/* Gate — near layer: approach, doors open, camera passes through */}
+        {/* Gate — approach, doors open, camera passes through */}
         <motion.div
           className="gpu absolute inset-0"
           style={{ transformOrigin: ORIGIN, perspective: 1300 }}
-          initial={{ scale: 1.06, opacity: 0 }}
+          initial={{ scale: 1.06, opacity: 1 }}
           animate={
             enter
               ? { scale: [1, 1.15, 1.17, 5.2], opacity: [1, 1, 1, 0] }
@@ -104,19 +113,19 @@ export function PalaceGate({
             className="bg-doorlight absolute"
             style={{ left: `${DOOR.left}%`, top: `${DOOR.top}%`, width: `${DOOR.right - DOOR.left}%`, height: `${DOOR.bottom - DOOR.top}%` }}
             initial={{ opacity: 0 }}
-            animate={enter ? { opacity: [0, 0.6, 0.3, 0] } : { opacity: 0 }}
+            animate={enter ? { opacity: [0, 0.5, 0.25, 0] } : { opacity: 0 }}
             transition={{ delay: T.doorsStart * k, duration: (T.doorsDur + 1.6) * k, times: [0, 0.3, 0.65, 1] }}
           />
 
-          {/* Door leaves swing inward on their hinges */}
+          {/* Gilded wrought-iron doors swing inward on their hinges */}
           <motion.div
             className="gpu absolute"
             style={{ left: `${DOOR.left}%`, top: `${DOOR.top}%`, width: `${DOOR.seam - DOOR.left}%`, height: `${DOOR.bottom - DOOR.top}%`, transformOrigin: "left center" }}
             animate={enter ? { rotateY: 100 } : { rotateY: 0 }}
             transition={{ delay: T.doorsStart * k, duration: T.doorsDur * k, ease: inOut }}
           >
-            <img src={doorLeft} alt="" className="h-full w-full" />
-            <motion.div className="absolute inset-0 bg-navy" style={maskOf(doorLeft)} initial={{ opacity: 0 }} animate={{ opacity: enter ? 0.55 : 0 }} transition={{ delay: T.doorsStart * k, duration: T.doorsDur * k }} />
+            <img src={doorLeft} alt="" className="h-full w-full drop-shadow-[0_6px_6px_oklch(0.3_0.07_265/0.35)]" />
+            <motion.div className="absolute inset-0 bg-navy" style={maskOf(doorLeft)} initial={{ opacity: 0 }} animate={{ opacity: enter ? 0.5 : 0 }} transition={{ delay: T.doorsStart * k, duration: T.doorsDur * k }} />
           </motion.div>
           <motion.div
             className="gpu absolute"
@@ -124,37 +133,56 @@ export function PalaceGate({
             animate={enter ? { rotateY: -100 } : { rotateY: 0 }}
             transition={{ delay: T.doorsStart * k, duration: T.doorsDur * k, ease: inOut }}
           >
-            <img src={doorRight} alt="" className="h-full w-full" />
-            <motion.div className="absolute inset-0 bg-navy" style={maskOf(doorRight)} initial={{ opacity: 0 }} animate={{ opacity: enter ? 0.55 : 0 }} transition={{ delay: T.doorsStart * k, duration: T.doorsDur * k }} />
+            <img src={doorRight} alt="" className="h-full w-full drop-shadow-[0_6px_6px_oklch(0.3_0.07_265/0.35)]" />
+            <motion.div className="absolute inset-0 bg-navy" style={maskOf(doorRight)} initial={{ opacity: 0 }} animate={{ opacity: enter ? 0.5 : 0 }} transition={{ delay: T.doorsStart * k, duration: T.doorsDur * k }} />
           </motion.div>
 
-          {/* Palace facade (doorway cut out so the doors swing behind the stone) */}
-          <img src={gateFrame} alt="Gerbang istana" className="absolute inset-0 h-full w-full" width={1088} height={1920} />
+          {/* Floral stone arch in the palace wall (doorway cut out so the doors sit inside it;
+              the hanging ivy and plants at the threshold stay in front of the doors) */}
+          <img src={gateFrame} alt="Gerbang taman istana" className="absolute inset-0 h-full w-full" width={1080} height={1920} />
 
           {/* Lantern glow */}
-          <span className="bg-lantern animate-glow absolute h-[9%] w-[16%] rounded-full" style={{ left: "5.8%", top: "43.6%" }} />
-          <span className="bg-lantern animate-glow absolute h-[9%] w-[16%] rounded-full [animation-delay:1.3s]" style={{ left: "77.5%", top: "43.6%" }} />
+          <span className="bg-lantern animate-glow absolute h-[9%] w-[16%] rounded-full" style={{ left: "-2.8%", top: "31.4%" }} />
+          <span className="bg-lantern animate-glow absolute h-[9%] w-[16%] rounded-full [animation-delay:1.3s]" style={{ left: "86.8%", top: "31.4%" }} />
 
-          {/* Golden seam of light before the doors part */}
+          {/* Golden glint along the seam before the doors part */}
           <motion.span
             className="seam-glow absolute w-[0.45%] rounded-full"
-            style={{ left: `${DOOR.seam - 0.22}%`, top: `${DOOR.top + 3}%`, height: `${DOOR.bottom - DOOR.top - 4}%`, transformOrigin: "center" }}
+            style={{ left: `${DOOR.seam - 0.22}%`, top: `${DOOR.top + 8}%`, height: `${DOOR.bottom - DOOR.top - 10}%`, transformOrigin: "center" }}
             initial={{ opacity: 0, scaleY: 0.2 }}
-            animate={enter ? { opacity: [0, 1, 1, 0], scaleY: [0.2, 1, 1, 1] } : { opacity: 0, scaleY: 0.2 }}
+            animate={enter ? { opacity: [0, 0.9, 0.9, 0], scaleY: [0.2, 1, 1, 1] } : { opacity: 0, scaleY: 0.2 }}
             transition={{ delay: T.seamStart * k, duration: 2.4 * k, times: [0, 0.4, 0.6, 1] }}
           />
 
           {/* Soft sheen gliding across the gilded doors */}
           <div
             className="pointer-events-none absolute overflow-hidden"
-            style={{ left: `${DOOR.left}%`, top: `${DOOR.top - 3}%`, width: `${DOOR.right - DOOR.left}%`, height: `${DOOR.bottom - DOOR.top + 3}%` }}
+            style={{ left: `${DOOR.left}%`, top: `${DOOR.top}%`, width: `${DOOR.right - DOOR.left}%`, height: `${DOOR.bottom - DOOR.top}%` }}
           >
             <div className="bg-sheen animate-sheen absolute inset-y-0 w-1/2" />
           </div>
+
+          {/* A pair of butterflies drifting around the roses on the arch */}
+          <motion.img
+            src={butterflyImg}
+            alt=""
+            className="gpu pointer-events-none absolute w-[5.5%]"
+            style={{ left: "24%", top: "24%" }}
+            animate={{ x: [0, 18, 34, 14, 0], y: [0, -14, 6, 20, 0], rotate: [-8, 10, -6, 12, -8] }}
+            transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
+          />
+          <motion.img
+            src={butterflyImg}
+            alt=""
+            className="gpu pointer-events-none absolute w-[4.2%] -scale-x-100"
+            style={{ left: "74%", top: "52%" }}
+            animate={{ x: [0, -16, -28, -8, 0], y: [0, 12, -10, -18, 0], rotate: [6, -8, 10, -6, 6] }}
+            transition={{ duration: 19, delay: 3, repeat: Infinity, ease: "easeInOut" }}
+          />
         </motion.div>
       </div>
 
-      {/* Floating gold dust */}
+      {/* Floating gold dust + a few drifting rose petals */}
       <div className="pointer-events-none absolute inset-0">
         {dust.map((d, i) => (
           <span
@@ -163,13 +191,20 @@ export function PalaceGate({
             style={{ left: `${d.left}%`, bottom: `${d.bottom}%`, width: d.size, height: d.size, animationDuration: `${d.dur}s`, animationDelay: `${d.delay}s`, boxShadow: "0 0 6px var(--gold)" }}
           />
         ))}
+        {petals.map((p, i) => (
+          <span
+            key={`p${i}`}
+            className={`animate-petal absolute top-0 rounded-[60%_0_60%_0] ${petalColors[p.c]}`}
+            style={{ left: `${p.left}%`, width: p.size, height: p.size, animationDuration: `${p.dur}s`, animationDelay: `${p.delay}s` }}
+          />
+        ))}
       </div>
 
       {/* Soft bloom of light as the doors part and we step into the garden */}
       <motion.div
         className="bg-doorlight pointer-events-none absolute inset-0"
         initial={{ opacity: 0 }}
-        animate={enter ? { opacity: [0, 0.3, 0.18, 0] } : { opacity: 0 }}
+        animate={enter ? { opacity: [0, 0.25, 0.15, 0] } : { opacity: 0 }}
         transition={{ delay: (T.doorsStart + 0.6) * k, duration: (T.pushStart + T.pushDur - T.doorsStart) * k, times: [0, 0.3, 0.7, 1] }}
       />
 
