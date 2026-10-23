@@ -7,6 +7,7 @@ import butterflyImg from "@/assets/butterfly.webp";
 import garland from "@/assets/garland.webp";
 import { WEDDING } from "./data";
 import { GATE_ORIGIN, GATE_T as T } from "./PalaceGate";
+import { Waterfall } from "./Waterfall";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -106,12 +107,18 @@ export function GardenIntro({ play = true }: { play?: boolean }) {
         <Layer x={xFar} y={yFar}>
           <span className="animate-glow absolute left-1/2 top-[6%] h-48 w-48 -translate-x-1/2 rounded-full bg-lantern" />
           <motion.div className="absolute inset-0" initial={{ opacity: 0.85, scale: 1.12 }} animate={play ? { opacity: 1, scale: 1 } : { opacity: 0.85, scale: 1.12 }} transition={{ duration: (T.pushStart + T.pushDur) * k, ease }}>
-            <img src={castle.url} alt="Castle" className="animate-kenburns h-full w-full object-cover" />
+            {/* Castle and its living waterfall share one cover box so they stay aligned */}
+            <div className="stage-cover">
+              <div className="animate-kenburns absolute inset-0">
+                <img src={castle.url} alt="Castle" className="h-full w-full" width={1080} height={1920} />
+                <Waterfall />
+              </div>
+            </div>
           </motion.div>
         </Layer>
 
-        {/* Soft cream ground that gives the title calm space */}
-        <div className="absolute inset-x-0 bottom-0 h-[58%] bg-gradient-to-t from-cream via-cream/90 to-transparent" />
+        {/* Soft cream ground that gives the title calm space (the pool stays visible above it) */}
+        <div className="absolute inset-x-0 bottom-0 h-[44%] bg-gradient-to-t from-cream from-25% via-cream/60 to-transparent" />
 
         {/* NEAR: a light wisteria frame, echoing the blossoms on the gate */}
         <Layer x={xNear} y={yNear}>
