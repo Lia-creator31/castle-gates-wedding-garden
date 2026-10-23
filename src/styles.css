@@ -123,8 +123,8 @@
   position: absolute;
   left: 50%;
   top: 50%;
-  width: max(100%, calc(100svh * 1088 / 1920));
-  aspect-ratio: 1088 / 1920;
+  width: max(100%, calc(100svh * 1080 / 1920));
+  aspect-ratio: 1080 / 1920;
   transform: translate(-50%, -50%);
 }
 @utility cover-veil {

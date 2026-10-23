@@ -496,10 +496,12 @@ export function Invitation() {
     <div className="min-h-screen bg-lilac-soft">
       <div className="relative mx-auto max-w-md overflow-hidden bg-cream shadow-soft">
         <AnimatePresence>{!opened && <PalaceGate guest={guest} category={ticket?.category ?? null} onOpen={open} onDone={arrive} />}</AnimatePresence>
-        {(entering || opened) && (
+        {/* The garden is always mounted behind the gate (seen through its doors);
+            its entry timeline starts when the gate is opened. */}
+        {(
           <main>
             <Petals />
-            <GardenIntro />
+            <GardenIntro play={entering || opened} />
             <SaveTheDate />
             <Quote />
             <Couple />

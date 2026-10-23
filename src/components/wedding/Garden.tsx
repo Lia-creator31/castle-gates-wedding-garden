@@ -1,7 +1,6 @@
 import { useMemo, useRef, type PointerEvent } from "react";
 import { motion, useMotionValue, useReducedMotion, useScroll, useSpring, useTransform, type MotionValue } from "framer-motion";
 import castle from "@/assets/Castle.png.asset.json";
-import floralArch from "@/assets/Gate.png.asset.json";
 import flowerBush from "@/assets/flower_bush.webp";
 import wisteria from "@/assets/wisteria.webp";
 import butterflyImg from "@/assets/butterfly.webp";
@@ -64,11 +63,11 @@ function Layer({ x, y, className, children }: { x: MotionValue<number>; y: Motio
 
 /* Core page: a calm palace garden — the castle, soft wisteria framing and the
    gate's cream / gold / burgundy palette, with only a few gentle accents.
-   It is mounted behind the palace gate as soon as the doors start to open, so
-   the doorway reveals this very scene: the camera dollies in with the gate
-   (same focus point + timeline), passes through the floral arch and arrives
-   at the castle, where the names appear. */
-export function GardenIntro() {
+   It sits behind the palace gate from the start (seen through the gate's
+   lattice) and only starts its timeline when `play` turns on: the camera then
+   dollies in with the gate (same focus point + timeline) and arrives at the
+   castle, where the names appear. There is no second gate here. */
+export function GardenIntro({ play = true }: { play?: boolean }) {
   const reduce = useReducedMotion();
   const k = reduce ? 0.3 : 1;
   const ref = useRef<HTMLElement>(null);
@@ -100,13 +99,13 @@ export function GardenIntro() {
         className="gpu pointer-events-none absolute inset-0"
         style={{ transformOrigin: GATE_ORIGIN }}
         initial={{ scale: 0.62 }}
-        animate={{ scale: [0.62, 0.66, 0.69, 1] }}
+        animate={play ? { scale: [0.62, 0.66, 0.69, 1] } : { scale: 0.62 }}
         transition={{ duration: camTotal * k, times: [0, at(T.approach), at(T.pushStart), 1], ease: [ease, "linear", [0.25, 0.6, 0.35, 1]] }}
       >
         {/* FAR: warm glow + castle */}
         <Layer x={xFar} y={yFar}>
           <span className="animate-glow absolute left-1/2 top-[6%] h-48 w-48 -translate-x-1/2 rounded-full bg-lantern" />
-          <motion.div className="absolute inset-0" initial={{ opacity: 0.85, scale: 1.12 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: (T.pushStart + T.pushDur) * k, ease }}>
+          <motion.div className="absolute inset-0" initial={{ opacity: 0.85, scale: 1.12 }} animate={play ? { opacity: 1, scale: 1 } : { opacity: 0.85, scale: 1.12 }} transition={{ duration: (T.pushStart + T.pushDur) * k, ease }}>
             <img src={castle.url} alt="Castle" className="animate-kenburns h-full w-full object-cover" />
           </motion.div>
         </Layer>
@@ -116,35 +115,23 @@ export function GardenIntro() {
 
         {/* NEAR: a light wisteria frame, echoing the blossoms on the gate */}
         <Layer x={xNear} y={yNear}>
-          <motion.div className="absolute -left-[8%] -top-[4%] w-[32%]" initial={{ opacity: 0, y: -40 }} animate={{ opacity: 0.9, y: 0 }} transition={{ duration: 1.8, delay: T.doorsStart * k, ease }}>
+          <motion.div className="absolute -left-[8%] -top-[4%] w-[32%]" initial={{ opacity: 0, y: -40 }} animate={play ? { opacity: 0.9, y: 0 } : { opacity: 0, y: -40 }} transition={{ duration: 1.8, delay: T.doorsStart * k, ease }}>
             <img src={wisteria} alt="" className="animate-sway w-full" />
           </motion.div>
-          <motion.div className="absolute -right-[8%] -top-[4%] w-[32%] -scale-x-100" initial={{ opacity: 0, y: -40 }} animate={{ opacity: 0.9, y: 0 }} transition={{ duration: 1.8, delay: (T.doorsStart + 0.2) * k, ease }}>
+          <motion.div className="absolute -right-[8%] -top-[4%] w-[32%] -scale-x-100" initial={{ opacity: 0, y: -40 }} animate={play ? { opacity: 0.9, y: 0 } : { opacity: 0, y: -40 }} transition={{ duration: 1.8, delay: (T.doorsStart + 0.2) * k, ease }}>
             <img src={wisteria} alt="" className="animate-sway w-full [animation-delay:-3s]" />
           </motion.div>
         </Layer>
-
-        {/* The floral arch stands in the garden just past the gate; the camera
-            walks through it on the way to the castle. */}
-        <motion.img
-          src={floralArch.url}
-          alt=""
-          className="gpu absolute inset-0 h-full w-full object-cover"
-          style={{ transformOrigin: "50% 45%" }}
-          initial={{ opacity: 1, scale: 1 }}
-          animate={{ opacity: 0, scale: 2.6 }}
-          transition={{ duration: T.archDur * k, delay: T.archStart * k, ease: [0.5, 0, 0.75, 0.4] }}
-        />
       </motion.div>
 
-      <motion.div className="pointer-events-none absolute inset-0" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1.5, delay: T.titleIn * k }}>
+      <motion.div className="pointer-events-none absolute inset-0" initial={{ opacity: 0 }} animate={{ opacity: play ? 1 : 0 }} transition={{ duration: 1.5, delay: T.titleIn * k }}>
         <Sparkles count={5} />
         <Butterfly className="left-[20%] top-[40%]" size={28} dur={18} delay={2.5} path={{ x: [0, 60, 110, 60, 10, 0], y: [0, -40, 10, 50, 20, 0] }} />
       </motion.div>
 
       {/* Title — same type, colours and gold divider as the gate cover */}
       <motion.div className="relative z-10 pb-14 text-center" style={{ y: yText, opacity: fade }}>
-        <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.4, delay: T.titleIn * k, ease }}>
+        <motion.div initial={{ opacity: 0, y: 40 }} animate={play ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }} transition={{ duration: 1.4, delay: T.titleIn * k, ease }}>
           <p className="font-serif text-xs uppercase tracking-[0.4em] text-navy">We are getting married</p>
           <h2 className="mt-2 font-script text-6xl text-burgundy drop-shadow-[0_2px_8px_var(--cream)]">{WEDDING.bride.nick} & {WEDDING.groom.nick}</h2>
           <div className="divider-gold mx-auto mt-3 w-32" />
