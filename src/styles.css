@@ -4,14 +4,25 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/*
+ * Shihab & Lia — Luxury Botanical Wedding design system.
+ * Official palette: Deep Burgundy #6E0D25, Midnight Navy #0F1E36,
+ * Metallic Gold #D4AF37, Soft Cream #F5EBD6. All values in oklch.
+ */
+
 @theme inline {
-  --font-script: "Great Vibes", cursive;
-  --font-serif: "Cormorant Garamond", serif;
-  --font-sans: "Jost", sans-serif;
+  --font-display: "Cormorant Garamond", "Times New Roman", serif;
+  --font-script: "Great Vibes", "Cormorant Garamond", cursive;
+  --font-sans: "Jost", system-ui, sans-serif;
+  --font-arabic: "Amiri", "Scheherazade New", serif;
+
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -31,161 +42,601 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
+  --color-ring-offset-background: var(--background);
+
   --color-burgundy: var(--burgundy);
+  --color-burgundy-deep: var(--burgundy-deep);
   --color-navy: var(--navy);
-  --color-lilac: var(--lilac);
-  --color-lilac-soft: var(--lilac-soft);
-  --color-cream: var(--cream);
+  --color-navy-deep: var(--navy-deep);
+  --color-navy-soft: var(--navy-soft);
   --color-gold: var(--gold);
+  --color-gold-light: var(--gold-light);
+  --color-gold-dark: var(--gold-dark);
+  --color-cream: var(--cream);
   --color-silver: var(--silver);
-  --color-garden: var(--garden);
-  --color-garden-soft: var(--garden-soft);
+
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
 }
 
 :root {
-  --radius: 1rem;
-  --cream: oklch(0.985 0.008 80);
-  --burgundy: oklch(0.38 0.12 15);
-  --navy: oklch(0.3 0.07 265);
-  --lilac: oklch(0.7 0.09 305);
-  --lilac-soft: oklch(0.95 0.025 310);
-  --gold: oklch(0.72 0.09 75);
+  --radius: 0.875rem;
 
-  --background: var(--cream);
-  --foreground: oklch(0.28 0.06 265);
-  --card: oklch(1 0 0 / 0.75);
-  --card-foreground: var(--foreground);
-  --popover: oklch(1 0 0);
-  --popover-foreground: var(--foreground);
-  --primary: var(--burgundy);
-  --primary-foreground: oklch(0.985 0.008 80);
-  --secondary: var(--lilac-soft);
-  --secondary-foreground: var(--navy);
-  --muted: oklch(0.96 0.012 300);
-  --muted-foreground: oklch(0.48 0.04 280);
-  --accent: var(--lilac);
-  --accent-foreground: var(--navy);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.985 0 0);
-  --border: oklch(0.88 0.03 310);
-  --input: oklch(0.88 0.03 310);
-  --ring: var(--lilac);
+  /* Natural garden palette (token names kept for compatibility):
+     "burgundy" = garden green, "navy" = deep forest / soft earth. */
+  --burgundy: oklch(0.4 0.06 138);
+  --burgundy-deep: oklch(0.3 0.05 142);
+  --navy: oklch(0.27 0.032 145);
+  --navy-deep: oklch(0.21 0.026 140);
+  --navy-soft: oklch(0.33 0.036 140);
+  --gold: oklch(0.767 0.139 91.1);
+  --gold-light: oklch(0.898 0.106 95);
+  --gold-dark: oklch(0.543 0.098 84.4);
+  --cream: oklch(0.942 0.03 85.6);
+  --silver: oklch(0.825 0.014 258.4);
 
-  --gradient-band: linear-gradient(180deg, var(--navy), oklch(0.26 0.06 280));
-  --gradient-soft: linear-gradient(180deg, var(--cream), var(--lilac-soft) 50%, var(--cream));
-  --gradient-gold: linear-gradient(90deg, transparent, var(--gold), transparent);
-  --shadow-soft: 0 20px 50px -20px oklch(0.38 0.12 15 / 0.35);
+  --background: var(--navy);
+  --foreground: var(--cream);
+  --card: var(--navy-soft);
+  --card-foreground: var(--cream);
+  --popover: var(--navy-deep);
+  --popover-foreground: var(--cream);
+  --primary: var(--gold);
+  --primary-foreground: var(--navy-deep);
+  --secondary: var(--burgundy);
+  --secondary-foreground: var(--cream);
+  --muted: oklch(0.32 0.035 140);
+  --muted-foreground: oklch(0.942 0.03 85.6 / 0.68);
+  --accent: var(--burgundy);
+  --accent-foreground: var(--cream);
+  --destructive: oklch(0.6 0.2 25);
+  --destructive-foreground: var(--cream);
+  --border: oklch(0.767 0.139 91.1 / 0.28);
+  --input: oklch(0.767 0.139 91.1 / 0.35);
+  --ring: var(--gold);
 
-  --silver: oklch(0.86 0.01 260);
-  --garden: oklch(0.55 0.09 145);
-  --garden-soft: oklch(0.93 0.035 140);
-  --gradient-sky: radial-gradient(ellipse at 50% 18%, oklch(0.97 0.04 85) 0%, transparent 45%),
-    linear-gradient(180deg, oklch(0.93 0.035 305) 0%, var(--cream) 55%, var(--garden-soft) 100%);
-  --gradient-sheen: linear-gradient(90deg, transparent, oklch(1 0.02 90 / 0.38), oklch(0.95 0.06 85 / 0.22), transparent);
-  --gradient-doorlight: radial-gradient(ellipse at 50% 55%, oklch(1 0.015 60) 0%, oklch(0.95 0.045 350 / 0.85) 35%, oklch(0.9 0.06 310 / 0) 75%);
+  /* Gradients */
+  --gradient-gold: linear-gradient(
+    120deg,
+    oklch(0.543 0.098 84.4) 0%,
+    oklch(0.898 0.106 95) 28%,
+    oklch(0.767 0.139 91.1) 48%,
+    oklch(0.96 0.07 95) 64%,
+    oklch(0.62 0.11 86) 100%
+  );
+  --gradient-silver: linear-gradient(
+    120deg,
+    oklch(0.6 0.012 258) 0%,
+    oklch(0.95 0.005 258) 30%,
+    oklch(0.78 0.014 258) 50%,
+    oklch(0.98 0.004 258) 66%,
+    oklch(0.64 0.012 258) 100%
+  );
+  --gradient-burgundy: linear-gradient(170deg, var(--burgundy) 0%, var(--burgundy-deep) 100%);
+  --gradient-navy: linear-gradient(180deg, var(--navy) 0%, var(--navy-deep) 100%);
+  --gradient-night: radial-gradient(
+    120% 70% at 50% 0%,
+    oklch(0.4 0.06 138 / 0.55) 0%,
+    transparent 60%
+  );
+
+  /* Shadows & glows */
+  --shadow-gold: 0 0 0 1px oklch(0.767 0.139 91.1 / 0.35), 0 18px 40px -18px oklch(0 0 0 / 0.7);
+  --shadow-card: 0 24px 48px -24px oklch(0 0 0 / 0.75);
+  --glow-gold: 0 0 28px oklch(0.85 0.13 92 / 0.55), 0 0 70px oklch(0.85 0.13 92 / 0.25);
+
+  --ease-lux: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --chart-1: var(--gold);
+  --chart-2: var(--burgundy);
+  --chart-3: var(--cream);
+  --chart-4: var(--navy-soft);
+  --chart-5: var(--silver);
+  --sidebar: var(--navy-deep);
+  --sidebar-foreground: var(--cream);
+  --sidebar-primary: var(--gold);
+  --sidebar-primary-foreground: var(--navy-deep);
+  --sidebar-accent: var(--burgundy);
+  --sidebar-accent-foreground: var(--cream);
+  --sidebar-border: var(--border);
+  --sidebar-ring: var(--gold);
 }
 
 @layer base {
-  * { border-color: var(--color-border); }
-  html { scroll-behavior: smooth; }
+  * {
+    border-color: var(--color-border);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
+  }
+
   body {
-    background-color: var(--color-lilac-soft);
+    background-color: var(--navy-deep);
     color: var(--color-foreground);
     font-family: var(--font-sans);
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background: oklch(0.767 0.139 91.1 / 0.4);
   }
 }
 
-@utility bg-band { background-image: var(--gradient-band); }
-@utility bg-soft { background-image: var(--gradient-soft); }
-@utility shadow-soft { box-shadow: var(--shadow-soft); }
-@utility divider-gold { height: 1px; background-image: var(--gradient-gold); }
-@utility arch { border-radius: 999px 999px 1.25rem 1.25rem; }
-@utility oval { border-radius: 50%; }
-@utility paper {
-  background-image:
-    radial-gradient(circle at 15% 10%, oklch(0.9 0.05 310 / 0.5), transparent 40%),
-    radial-gradient(circle at 85% 90%, oklch(0.88 0.05 15 / 0.35), transparent 45%);
+/* ---------- Typography utilities ---------- */
+@utility text-gold {
+  background-image: var(--gradient-gold);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
-@keyframes float-y { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
-@keyframes kenburns { from { transform: scale(1); } to { transform: scale(1.08); } }
-@keyframes petal {
-  0% { transform: translate3d(0,-10vh,0) rotate(0); opacity: 0; }
-  10% { opacity: .8; }
-  100% { transform: translate3d(40px,110vh,0) rotate(360deg); opacity: 0; }
+@utility text-gold-shimmer {
+  background-image: var(--gradient-gold);
+  background-size: 220% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: gold-shimmer 6s linear infinite;
 }
-@utility animate-float { animation: float-y 5s ease-in-out infinite; }
-@utility animate-kenburns { animation: kenburns 14s ease-in-out infinite alternate; }
-@utility animate-petal { animation: petal linear infinite both; }
 
-/* ---------- Palace gate & garden ---------- */
-@utility stage-cover {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: max(100%, calc(100svh * 1080 / 1920));
-  aspect-ratio: 1080 / 1920;
-  transform: translate(-50%, -50%);
+@utility text-fluid-hero {
+  font-size: clamp(2.9rem, 14vw, 4.1rem);
+  line-height: 1.05;
 }
-@utility cover-veil {
-  background-image: radial-gradient(ellipse at center, oklch(0.985 0.008 80 / 0.82) 0%, oklch(0.985 0.008 80 / 0.5) 45%, transparent 72%);
-}
-@utility bg-sky { background-image: var(--gradient-sky); }
-@utility bg-sheen { background-image: var(--gradient-sheen); }
-@utility bg-doorlight { background-image: var(--gradient-doorlight); }
-@utility bg-lantern { background-image: radial-gradient(circle, oklch(0.93 0.1 85 / 0.85), oklch(0.85 0.12 75 / 0.35) 35%, transparent 70%); }
-@utility seam-glow {
-  background-image: linear-gradient(180deg, transparent, oklch(0.97 0.06 90), oklch(0.9 0.11 80), oklch(0.97 0.06 90), transparent);
-  box-shadow: 0 0 18px 6px oklch(0.9 0.11 80 / 0.7), 0 0 60px 18px oklch(0.95 0.06 90 / 0.45);
-}
-@utility gpu { will-change: transform, opacity; backface-visibility: hidden; transform-style: flat; }
 
-@keyframes sheen { 0%, 55% { transform: translateX(-120%) skewX(-18deg); } 85%, 100% { transform: translateX(220%) skewX(-18deg); } }
-@keyframes glow-pulse { 0%, 100% { opacity: .55; transform: scale(.92); } 50% { opacity: 1; transform: scale(1.08); } }
-@keyframes sway { 0%, 100% { transform: rotate(-2deg); } 50% { transform: rotate(2.2deg); } }
-@keyframes sway-soft { 0%, 100% { transform: rotate(-1deg) translateY(0); } 50% { transform: rotate(1deg) translateY(-3px); } }
-@keyframes flap { 0%, 100% { transform: scaleX(1); } 50% { transform: scaleX(.28); } }
+@utility text-fluid-title {
+  font-size: clamp(1.9rem, 8.5vw, 2.4rem);
+  line-height: 1.1;
+}
+
+@utility text-fluid-script {
+  font-size: clamp(2.2rem, 11vw, 3rem);
+  line-height: 1.15;
+}
+
+@utility text-eyebrow {
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+}
+
+/* ---------- Surfaces ---------- */
+@utility bg-gold {
+  background-image: var(--gradient-gold);
+  background-size: 200% auto;
+}
+
+@utility bg-silver {
+  background-image: var(--gradient-silver);
+  background-size: 200% auto;
+}
+
+@utility bg-burgundy-gradient {
+  background-image: var(--gradient-burgundy);
+}
+
+@utility bg-navy-gradient {
+  background-image: var(--gradient-navy);
+}
+
+@utility bg-night {
+  background-image: var(--gradient-night), var(--gradient-navy);
+}
+
+@utility card-lux {
+  border: 1px solid oklch(0.767 0.139 91.1 / 0.35);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-card);
+  background:
+    linear-gradient(160deg, oklch(1 0 0 / 0.06), oklch(1 0 0 / 0) 40%),
+    var(--navy-soft);
+}
+
+@utility card-lux-burgundy {
+  border: 1px solid oklch(0.767 0.139 91.1 / 0.4);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-card);
+  background:
+    linear-gradient(160deg, oklch(1 0 0 / 0.08), oklch(1 0 0 / 0) 45%),
+    var(--gradient-burgundy);
+}
+
+@utility gold-frame {
+  border: 1px solid oklch(0.767 0.139 91.1 / 0.6);
+  box-shadow:
+    inset 0 0 0 3px oklch(0.195 0.038 258.8 / 0.6),
+    inset 0 0 0 4px oklch(0.767 0.139 91.1 / 0.35);
+}
+
+@utility glow-gold {
+  box-shadow: var(--glow-gold);
+}
+
+@utility drop-glow {
+  filter: drop-shadow(0 0 14px oklch(0.85 0.13 92 / 0.45));
+}
+
+@utility field-lux {
+  width: 100%;
+  border-radius: var(--radius-lg);
+  border: 1px solid oklch(0.767 0.139 91.1 / 0.4);
+  background: oklch(0.195 0.038 258.8 / 0.55);
+  color: var(--cream);
+  padding: 0.75rem 1rem;
+  font-size: 0.95rem;
+  transition:
+    border-color 0.3s var(--ease-lux),
+    box-shadow 0.3s var(--ease-lux);
+  &::placeholder {
+    color: oklch(0.942 0.03 85.6 / 0.45);
+  }
+  &:focus {
+    outline: none;
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px oklch(0.767 0.139 91.1 / 0.2);
+  }
+}
+
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* ---------- Animations ---------- */
+@keyframes gold-shimmer {
+  0% {
+    background-position: 0% center;
+  }
+  100% {
+    background-position: 220% center;
+  }
+}
+
+@keyframes petal-fall {
+  0% {
+    transform: translate3d(0, -10vh, 0) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.9;
+  }
+  100% {
+    transform: translate3d(var(--drift, 40px), 110vh, 0) rotate(var(--spin, 540deg));
+    opacity: 0;
+  }
+}
+
+@keyframes particle-rise {
+  0% {
+    transform: translateY(0) scale(0.6);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-60vh) scale(1);
+    opacity: 0;
+  }
+}
+
+@keyframes pulse-glow {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 10px oklch(0.85 0.13 92 / 0.35));
+    transform: scale(1);
+  }
+  50% {
+    filter: drop-shadow(0 0 26px oklch(0.85 0.13 92 / 0.75));
+    transform: scale(1.04);
+  }
+}
+
+@keyframes spin-slow {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes mist-drift {
+  0%,
+  100% {
+    transform: translateX(-4%);
+    opacity: 0.55;
+  }
+  50% {
+    transform: translateX(4%);
+    opacity: 0.8;
+  }
+}
+
+@utility animate-petal {
+  animation: petal-fall var(--dur, 14s) linear var(--delay, 0s) infinite;
+}
+
+@utility animate-particle {
+  animation: particle-rise var(--dur, 9s) ease-out var(--delay, 0s) infinite;
+}
+
+@utility animate-pulse-glow {
+  animation: pulse-glow 2.8s ease-in-out infinite;
+}
+
+@utility animate-spin-slow {
+  animation: spin-slow 6s linear infinite;
+}
+
+@utility animate-mist {
+  animation: mist-drift 12s ease-in-out infinite;
+}
+
+/* ---------- Garden journey & garden life ---------- */
+:root {
+  --garden-sky-top: oklch(0.3 0.08 20);
+  --garden-sky-mid: oklch(0.62 0.12 45);
+  --garden-sky-low: oklch(0.88 0.1 85);
+  --garden-hill: oklch(0.42 0.05 170);
+  --garden-hill-far: oklch(0.58 0.05 150);
+  --garden-leaf: oklch(0.38 0.07 150);
+  --garden-leaf-light: oklch(0.52 0.09 140);
+  --garden-leaf-deep: oklch(0.25 0.05 165);
+  --garden-grass: oklch(0.45 0.08 135);
+  --garden-path: oklch(0.72 0.06 80);
+  --garden-rock: oklch(0.34 0.025 250);
+  --garden-rock-light: oklch(0.46 0.03 250);
+  --garden-water: oklch(0.88 0.04 215);
+  --garden-water-deep: oklch(0.55 0.07 220);
+  --garden-wood: oklch(0.36 0.06 50);
+}
+
+@keyframes water-flow {
+  to {
+    stroke-dashoffset: -120;
+  }
+}
+
+@keyframes water-shimmer {
+  0%,
+  100% {
+    opacity: 0.25;
+    transform: scaleX(0.85);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scaleX(1.1);
+  }
+}
+
+@keyframes mist-pulse {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.08);
+  }
+}
+
+@keyframes leaf-sway {
+  0%,
+  100% {
+    transform: rotate(-1.2deg);
+  }
+  50% {
+    transform: rotate(1.2deg);
+  }
+}
+
+@utility animate-water-flow {
+  animation: water-flow var(--dur, 1.4s) linear infinite;
+}
+
+@utility animate-water-shimmer {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: water-shimmer var(--dur, 3.2s) ease-in-out var(--delay, 0s) infinite;
+}
+
+@utility animate-mist-pulse {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: mist-pulse 4s ease-in-out infinite;
+}
+
+@utility animate-leaf-sway {
+  transform-box: fill-box;
+  transform-origin: bottom center;
+  animation: leaf-sway var(--dur, 6s) ease-in-out var(--delay, 0s) infinite;
+}
+
+@keyframes rays-turn {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 @keyframes bird-fly {
-  0% { transform: translate3d(-15vw, 0, 0); opacity: 0; }
-  8% { opacity: .85; }
-  50% { transform: translate3d(50vw, -18px, 0); }
-  92% { opacity: .85; }
-  100% { transform: translate3d(min(115vw, 32rem), 6px, 0); opacity: 0; }
+  0% {
+    transform: translate3d(-12cqw, 0, 0);
+  }
+  35% {
+    transform: translate3d(30cqw, -3cqh, 0);
+  }
+  70% {
+    transform: translate3d(75cqw, 1cqh, 0);
+  }
+  100% {
+    transform: translate3d(112cqw, -2cqh, 0);
+  }
 }
-@keyframes bird-wing { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(-.55); } }
-@keyframes twinkle { 0%, 100% { opacity: 0; transform: scale(.4); } 50% { opacity: 1; transform: scale(1); } }
-@keyframes dust-rise {
-  0% { transform: translate3d(0, 0, 0); opacity: 0; }
-  20% { opacity: .9; }
-  100% { transform: translate3d(14px, -38vh, 0); opacity: 0; }
-}
-@keyframes mist { 0%, 100% { opacity: .35; transform: scale(1); } 50% { opacity: .7; transform: scale(1.06); } }
 
-@utility animate-sheen { animation: sheen 7s ease-in-out infinite; }
-@utility animate-glow { animation: glow-pulse 3.6s ease-in-out infinite; }
-@utility animate-sway { animation: sway 7s ease-in-out infinite; transform-origin: top center; }
-@utility animate-sway-soft { animation: sway-soft 6s ease-in-out infinite; transform-origin: bottom center; }
-@utility animate-flap { animation: flap .32s ease-in-out infinite; }
-@utility animate-bird { animation: bird-fly linear infinite both; }
-@utility animate-bird-wing { animation: bird-wing .5s ease-in-out infinite; transform-origin: center; }
-@utility animate-twinkle { animation: twinkle 3s ease-in-out infinite both; }
-@utility glow-gold { box-shadow: 0 0 8px 2px color-mix(in oklab, var(--gold) 70%, transparent); }
-@utility animate-dust { animation: dust-rise linear infinite both; }
-@utility animate-mist { animation: mist 4s ease-in-out infinite; }
-
-/* CSS fallback for the waterfall when WebGL is unavailable */
-@keyframes water-flow { from { background-position: 0 0, 0 0; } to { background-position: 0 120px, 0 70px; } }
-@utility bg-water-streaks {
-  background-image:
-    repeating-linear-gradient(180deg, oklch(1 0 0 / 0) 0 18px, oklch(1 0.005 250 / 0.55) 30px, oklch(1 0 0 / 0) 46px, oklch(1 0 0 / 0) 120px),
-    repeating-linear-gradient(90deg, oklch(0.78 0.04 220 / 0.25) 0 3px, oklch(1 0 0 / 0) 3px 9px);
+@keyframes wing-flap {
+  0%,
+  100% {
+    transform: scaleY(1);
+  }
+  50% {
+    transform: scaleY(-0.4);
+  }
 }
-@utility animate-water-flow { animation: water-flow 1.4s linear infinite; }
-@utility bg-water-foam { background-image: radial-gradient(ellipse, oklch(1 0 0 / 0.9), oklch(0.98 0.01 300 / 0.4) 45%, transparent 70%); filter: blur(2px); }
+
+@keyframes butterfly-wander {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(-8deg);
+  }
+  25% {
+    transform: translate3d(14cqw, -6cqh, 0) rotate(10deg);
+  }
+  50% {
+    transform: translate3d(28cqw, -2cqh, 0) rotate(-4deg);
+  }
+  75% {
+    transform: translate3d(10cqw, 4cqh, 0) rotate(12deg);
+  }
+}
+
+@keyframes butterfly-wander-alt {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(6deg);
+  }
+  30% {
+    transform: translate3d(-16cqw, 5cqh, 0) rotate(-10deg);
+  }
+  60% {
+    transform: translate3d(-6cqw, -7cqh, 0) rotate(8deg);
+  }
+  80% {
+    transform: translate3d(8cqw, -3cqh, 0) rotate(-6deg);
+  }
+}
+
+@keyframes butterfly-flap {
+  0%,
+  100% {
+    transform: scaleX(1);
+  }
+  45% {
+    transform: scaleX(0.35);
+  }
+  60% {
+    transform: scaleX(0.45);
+  }
+}
+
+@keyframes deer-walk {
+  0% {
+    transform: translate3d(-18cqw, 0, 0);
+  }
+  100% {
+    transform: translate3d(118cqw, 0, 0);
+  }
+}
+
+@keyframes deer-bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-1px);
+  }
+}
+
+@keyframes deer-step {
+  0%,
+  100% {
+    transform: rotate(14deg);
+  }
+  50% {
+    transform: rotate(-14deg);
+  }
+}
+
+@utility animate-rays {
+  animation: rays-turn 40s linear infinite;
+}
+
+@utility animate-bird-fly {
+  animation: bird-fly var(--dur, 20s) linear var(--delay, 0s) infinite;
+}
+
+@utility animate-wing-flap {
+  animation: wing-flap 0.55s ease-in-out infinite;
+}
+
+@utility animate-butterfly-wander {
+  animation: butterfly-wander var(--dur, 18s) ease-in-out var(--delay, 0s) infinite;
+}
+
+@utility animate-butterfly-wander-alt {
+  animation: butterfly-wander-alt var(--dur, 20s) ease-in-out var(--delay, 0s) infinite;
+}
+
+@utility animate-butterfly-flap {
+  animation: butterfly-flap 0.32s ease-in-out infinite;
+}
+
+@utility animate-deer-walk {
+  animation: deer-walk 46s linear -12s infinite;
+}
+
+@utility animate-deer-bob {
+  animation: deer-bob 0.9s ease-in-out infinite;
+}
+
+@utility animate-deer-step {
+  animation: deer-step 0.9s ease-in-out infinite;
+}
+
+@utility animate-deer-step-alt {
+  animation: deer-step 0.9s ease-in-out -0.45s infinite;
+}
+
+/* Golden light rays that pour through the opened gate. */
+@utility bg-light-rays {
+  background: repeating-conic-gradient(
+    from 0deg at 50% 50%,
+    color-mix(in oklab, var(--gold-light) 38%, transparent) 0deg 5deg,
+    transparent 5deg 18deg
+  );
+  mask-image: radial-gradient(circle at 50% 50%, black 0%, transparent 62%);
+}
+
+/* Soft blurred edges of the garden that rush past during the camera push. */
+@utility garden-edge-mask {
+  mask-image: radial-gradient(ellipse 60% 55% at 50% 50%, transparent 35%, black 80%);
+}
 
 @media (prefers-reduced-motion: reduce) {
-  .animate-sheen, .animate-glow, .animate-sway, .animate-sway-soft, .animate-flap, .animate-bird,
-  .animate-bird-wing, .animate-twinkle, .animate-dust, .animate-mist, .animate-water-flow, .animate-kenburns, .animate-petal, .animate-float {
-    animation: none !important;
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
   }
 }

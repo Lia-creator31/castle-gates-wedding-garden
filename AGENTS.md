@@ -10,7 +10,5 @@
 <!-- LOVABLE:END -->
 
 ## Project rules
-- Invitation UI lives in `src/components/wedding/`; all names, dates, venues, banks and wishes come from `data.ts` so copy changes never touch layout code.
-- The entry gate (`PalaceGate.tsx`) is the single main gate: the user's original floral arch (`Gate.png`) composited into a painted palace-wall scene, with wrought-iron door leaves cut to the arch opening. It is driven by the single `T` timeline and `DOOR` percentages measured on that artwork, so regenerate frame + doors together if the artwork changes. Never add a second gate/arch elsewhere in the entry.
-- The gate has no picture of its own behind the doors: `GardenIntro` is always mounted under the see-through gate and starts its timeline via `play` when entry starts, following the exported `GATE_T`/`GATE_ORIGIN`, so the doorway reveals the real garden page and the hand-off has no cut.
-- Large decorative images ship as optimized local `.webp` imports; original user media stays as `.asset.json` CDN pointers.
+- Invitation UI lives in `src/components/invitation/`; content comes from `data.ts`, official graphics from `assets.ts` (CDN `.asset.json` pointers).
+- The opening (`Landing.tsx`) runs every layer off one `JOURNEY` clock with marks in `M`; the closed-gate image only sizes the stage while the left/right leaves are shown from the start, so opening never swaps images.
